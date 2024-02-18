@@ -12,15 +12,15 @@ namespace AsifNutsNSeeds.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product_Branch>().HasKey(am => new
+            modelBuilder.Entity<Product_Branch>().HasKey(pb => new
             {
-                am.BranchID,
-                am.ProductID
+                pb.BranchID,
+                pb.ProductID
 
             });
 
-            modelBuilder.Entity<Product_Branch>().HasOne(m => m.Product).WithMany(am => am.Product_Branches).HasForeignKey(m => m.ProductID);
-            modelBuilder.Entity<Product_Branch>().HasOne(m => m.Branch).WithMany(am => am.Product_Branches).HasForeignKey(m => m.BranchID);
+            modelBuilder.Entity<Product_Branch>().HasOne(p => p.Product).WithMany(pb => pb.Product_Branches).HasForeignKey(p => p.ProductID);
+            modelBuilder.Entity<Product_Branch>().HasOne(p => p.Branch).WithMany(pb => pb.Product_Branches).HasForeignKey(p => p.BranchID);
 
             base.OnModelCreating(modelBuilder);
         }

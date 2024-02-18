@@ -18,14 +18,18 @@ namespace AsifNutsNSeeds.Models
         public ProductCategory productCategory { get; set; }
         
         //Relationshops
+
+        // Branch - many to many
         public List<Product_Branch> Product_Branches { get; set; }
 
-        //Country
+        //Country - one to many
+
         public int CountryID { get; set; }
         [ForeignKey("CountryID")]
         public Country Country { get; set; }
 
-        //Producer
+        //Producer - one to many
+
         public int ProducerID { get; set; }
         [ForeignKey("ProducerID")]
 
