@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Branch>
+
+@{
+	ViewData["Title"] = "List of Branches";
+}
+
+
+<div class ="row">
+
+	<div class="col-md-8 offset-md-2">
+		 
+		<table>
+			<thead>
+				<tr>
+					<th>@Html.DisplayNameFor(model => model.Logo) </th>
+					<th>@Html.DisplayNameFor(model => model.BranchName) </th>
+					<th>@Html.DisplayNameFor(model => model.BranchDescription) </th>
+					<th>Actions</th>
+				</tr>/thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+
+						<td class="align-middle">
+							<img class="rounded-circle" src="@item.Logo" alt="@item.BranchName" style="max-witdh: 150px" />
+						</td>
+
+						<td class="align-middle">
+							@Html.DisplayFor(modelItem => item.BranchName)
+						</td>
+						<td class="align-middle">
+							@Html.DisplayFor(modelItem => item.BranchDescription)
+
+						</td>
+						<td class="align-middle">
+							<a class="btn btn-outline-primary"><i class=bi bi-pencil-square></i>Edit </a>
+							<a class="btn btn-outline-info"><i class=bi bi-eye></i>Details </a>
+							<a class="btn btn-outline-danger"><i class=bi bi-trash></i>Trash</a>
+						</td>
+
+					</tr>
+				}
+
+			</tbody>
+
+
+		</table>
+
+
+
+
+	</div>
+
+
+
+
+
+</div>
