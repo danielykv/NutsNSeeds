@@ -8,14 +8,19 @@ namespace AsifNutsNSeeds.Models
         public int BranchID { get; set; }   
 
         [Display(Name = "Branch Picture URL")]
+        [Required(ErrorMessage ="Logo picture is required")]
         public string Logo { get; set; }
 		[Display(Name = "Branch Name ")]
+        [Required(ErrorMessage = "Branch name is required")]
+        [StringLength(50,MinimumLength = 3 ,ErrorMessage = "Full name must be 3-50 characters")]
 
-		public string BranchName { get; set; }
+        public string BranchName { get; set; }
 
 		[Display(Name = "Branch Description")]
-		public string BranchDescription { get; set; }
+        [Required(ErrorMessage = "Branch Description is required")]
 
-        public List<Product_Branch> Product_Branches{ get; set; }
+        public string BranchDescription { get; set; }
+
+        public List<Product_Branch>? Product_Branches{ get; set; }
     }
 }

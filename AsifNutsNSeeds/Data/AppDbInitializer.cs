@@ -14,6 +14,39 @@ namespace AsifNutsNSeeds.Data
 
 				context.Database.EnsureCreated();
 
+				//Countries
+				if (!context.Countries.Any())
+				{
+					context.Countries.AddRange(new List<Country>()
+						{
+							new Country()
+							{
+								CountryName = "Guatemala",
+								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/1200px-Flag_of_Guatemala.svg.png",
+								CountryBio = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks."
+							},
+
+							new Country()
+							{
+								CountryName = "Colombia",
+								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/800px-Flag_of_Colombia.svg.png",
+								CountryBio = "Situated in the bustling city of Ofakim, this branch boasts an extensive range of high-quality nuts and seeds. Its friendly staff and cozy atmosphere make it a favorite among locals.\r\n"
+							},
+
+							new Country()
+							{
+								CountryName = "Argentina",
+								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/2560px-Flag_of_Argentina.svg.png",
+								CountryBio = "Located near the beautiful coastline of Ashkelon, this branch offers a diverse selection of nuts and seeds. It’s the perfect place to grab a healthy snack after a day at the beach.\r\n"
+							},
+
+
+						});
+
+					context.SaveChanges();
+
+				}
+
 				//Branches
 				if (!context.Branches.Any())
 				{
@@ -45,6 +78,7 @@ namespace AsifNutsNSeeds.Data
 
 					context.SaveChanges();
 				}
+
 				//Producers
 				if (!context.Producers.Any())
 				{
@@ -76,6 +110,7 @@ namespace AsifNutsNSeeds.Data
 
 					context.SaveChanges();
 				}
+				
 				//Products
 				if (!context.Products.Any())
 				{
@@ -121,63 +156,34 @@ namespace AsifNutsNSeeds.Data
 
 					context.SaveChanges();
 				}
-				//Countries
-				if (!context.Countries.Any())
-				{
-					context.Countries.AddRange(new List<Country>()
-						{
-							new Country()
-							{
-								CountryName = "Guatemala",
-								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/1200px-Flag_of_Guatemala.svg.png",
-								CountryBio = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks."
-							},
 
-							new Country()
-							{
-								CountryName = "Colombia",
-								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/800px-Flag_of_Colombia.svg.png",
-								CountryBio = "Situated in the bustling city of Ofakim, this branch boasts an extensive range of high-quality nuts and seeds. Its friendly staff and cozy atmosphere make it a favorite among locals.\r\n"
-							},
-
-							new Country()
-							{
-								CountryName = "Argentina",
-								ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/2560px-Flag_of_Argentina.svg.png",
-								CountryBio = "Located near the beautiful coastline of Ashkelon, this branch offers a diverse selection of nuts and seeds. It’s the perfect place to grab a healthy snack after a day at the beach.\r\n"
-							},
-
-
-						});
-
-					context.SaveChanges();
-
-				}
 				//Product & Branches
 				if (!context.Product_Branches.Any())
 				{
 					context.Product_Branches.AddRange(new List<Product_Branch>()
+				{
+					new Product_Branch()
 					{
-						new Product_Branch()
-						{
-							ProductID = 1,
-							BranchID = 1,
-						},
-						new Product_Branch()
-						{
-							ProductID = 1,
-							BranchID = 2,
-						},
-						new Product_Branch()
-						{
-							ProductID = 1,
-							BranchID = 3,
-						},
+						ProductID = 9,
+						BranchID = 1,
+					},
+					new Product_Branch()
+					{
+						ProductID = 10,
+						BranchID = 2,
+					},
+					new Product_Branch()
+					{
+						ProductID = 11,
+						BranchID = 3,
+					},
 
-					});
+				});
 					context.SaveChanges();
 
 				}
+
+
 
 			}
 

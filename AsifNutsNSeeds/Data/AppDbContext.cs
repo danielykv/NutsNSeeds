@@ -27,8 +27,8 @@ namespace AsifNutsNSeeds.Data
 
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Product_Branch> Product_Branches{ get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Producer> Producers { get; set; }
+        public DbSet<Product_Branch> Product_Branches{ get; set; }
     }
 }

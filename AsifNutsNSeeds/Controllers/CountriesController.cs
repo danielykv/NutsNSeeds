@@ -15,7 +15,7 @@ namespace AsifNutsNSeeds.Controllers
         public async Task<IActionResult> Index()
         {
             var allCountries = await _context.Countries.ToListAsync();
-            return View();
+            return View(allCountries);
         }
     }
 }
