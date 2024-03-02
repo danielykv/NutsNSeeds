@@ -1,13 +1,10 @@
-﻿using AsifNutsNSeeds.Models;
+﻿using AsifNutsNSeeds.Data.Base;
+using AsifNutsNSeeds.Models;
 using System.Collections.Generic;
 namespace AsifNutsNSeeds.Data.Services
 {
-    public interface IBranchesService
+    public interface IBranchesService: IEntityBaseRepository<Branch>
     {
-        Task<IEnumerable<Branch>> GetAllAsync();
-        Task<Branch> GetByIdAsync(int id);
-        Task AddAsync(Branch branch);
-        Task<Branch>  UpdateAsync(int id, Branch newBranch);
-        Task DeleteAsync(int id);
+       
     }
 }

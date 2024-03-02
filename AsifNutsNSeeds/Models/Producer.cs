@@ -5,7 +5,7 @@ namespace AsifNutsNSeeds.Models
     public class Producer
     {
         [Key]
-        public int ProducerID { get; set; }
+        public int Id { get; set; }
 
         public string ProfilePictureURL { get; set; }
         public string ProducerName { get; set; }

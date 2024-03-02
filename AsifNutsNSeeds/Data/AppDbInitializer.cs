@@ -164,18 +164,18 @@ namespace AsifNutsNSeeds.Data
 				{
 					new Product_Branch()
 					{
-						ProductID = 9,
-						BranchID = 1,
+						ProductID = 1,
+						Id = 1,
 					},
 					new Product_Branch()
 					{
-						ProductID = 10,
-						BranchID = 2,
+						ProductID = 2,
+						Id = 2,
 					},
 					new Product_Branch()
 					{
-						ProductID = 11,
-						BranchID = 3,
+						ProductID = 3,
+						Id = 3,
 					},
 
 				});

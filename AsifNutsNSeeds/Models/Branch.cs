@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AsifNutsNSeeds.Data.Base;
 
 namespace AsifNutsNSeeds.Models
 {
-    public class Branch
-    {
+    public class Branch: IEntityBase
+	{
         [Key]
-        public int BranchID { get; set; }   
+        public int Id { get; set; }   
 
         [Display(Name = "Branch Picture URL")]
         [Required(ErrorMessage ="Logo picture is required")]

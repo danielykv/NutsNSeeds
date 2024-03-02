@@ -5,7 +5,7 @@
         public int ProductID { get; set; }
         public Product Product { get; set; }
 
-        public int BranchID { get; set; }
+        public int Id { get; set; }
         public Branch Branch { get; set; }
     }
 }

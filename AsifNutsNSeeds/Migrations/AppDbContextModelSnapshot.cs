@@ -23,11 +23,11 @@ namespace AsifNutsNSeeds.Migrations
 
             modelBuilder.Entity("AsifNutsNSeeds.Models.Branch", b =>
                 {
-                    b.Property<int>("BranchID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BranchDescription")
                         .IsRequired()
@@ -35,24 +35,25 @@ namespace AsifNutsNSeeds.Migrations
 
                     b.Property<string>("BranchName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Logo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BranchID");
+                    b.HasKey("Id");
 
                     b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("AsifNutsNSeeds.Models.Country", b =>
                 {
-                    b.Property<int>("CountryID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CountryID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CountryBio")
                         .IsRequired()
@@ -66,18 +67,18 @@ namespace AsifNutsNSeeds.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CountryID");
+                    b.HasKey("Id");
 
                     b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("AsifNutsNSeeds.Models.Producer", b =>
                 {
-                    b.Property<int>("ProducerID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProducerID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ProducerBio")
                         .IsRequired()
@@ -91,18 +92,18 @@ namespace AsifNutsNSeeds.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProducerID");
+                    b.HasKey("Id");
 
                     b.ToTable("Producers");
                 });
 
             modelBuilder.Entity("AsifNutsNSeeds.Models.Product", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CountryID")
                         .HasColumnType("int");
@@ -128,7 +129,7 @@ namespace AsifNutsNSeeds.Migrations
                     b.Property<int>("productCategory")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductID");
+                    b.HasKey("Id");
 
                     b.HasIndex("CountryID");
 
@@ -139,13 +140,13 @@ namespace AsifNutsNSeeds.Migrations
 
             modelBuilder.Entity("AsifNutsNSeeds.Models.Product_Branch", b =>
                 {
-                    b.Property<int>("BranchID")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.HasKey("BranchID", "ProductID");
+                    b.HasKey("Id", "ProductID");
 
                     b.HasIndex("ProductID");
 
@@ -175,7 +176,7 @@ namespace AsifNutsNSeeds.Migrations
                 {
                     b.HasOne("AsifNutsNSeeds.Models.Branch", "Branch")
                         .WithMany("Product_Branches")
-                        .HasForeignKey("BranchID")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

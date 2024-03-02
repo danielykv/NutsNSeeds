@@ -14,13 +14,13 @@ namespace AsifNutsNSeeds.Data
         {
             modelBuilder.Entity<Product_Branch>().HasKey(pb => new
             {
-                pb.BranchID,
+                pb.Id,
                 pb.ProductID
 
             });
 
             modelBuilder.Entity<Product_Branch>().HasOne(p => p.Product).WithMany(pb => pb.Product_Branches).HasForeignKey(p => p.ProductID);
-            modelBuilder.Entity<Product_Branch>().HasOne(p => p.Branch).WithMany(pb => pb.Product_Branches).HasForeignKey(p => p.BranchID);
+            modelBuilder.Entity<Product_Branch>().HasOne(p => p.Branch).WithMany(pb => pb.Product_Branches).HasForeignKey(p => p.Id);
 
             base.OnModelCreating(modelBuilder);
         }

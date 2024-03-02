@@ -64,7 +64,7 @@ namespace AsifNutsNSeeds.Controllers
 		public async Task<IActionResult> Edit(int id, Branch branch)
 		{
 
-            branch.BranchID = id;
+            branch.Id = id;
 			if (!ModelState.IsValid)
 			{
 			return View(branch);
