@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AsifNutsNSeeds.Data.Base;
 using AsifNutsNSeeds.Data.Enums;
 
 namespace AsifNutsNSeeds.Models
 {
-    public class Product
+    public class Product:IEntityBase
     {
         [Key]
         public int Id  { get; set; }

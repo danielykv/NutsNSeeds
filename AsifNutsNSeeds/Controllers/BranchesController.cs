@@ -30,7 +30,7 @@ namespace AsifNutsNSeeds.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("BranchName, Logo, BranchDescription")]Branch branch)
+        public async Task<IActionResult> Create(Branch branch)
         {
             if(!ModelState.IsValid) 
             {

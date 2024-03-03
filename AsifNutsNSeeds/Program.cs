@@ -18,6 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Services Configure
 builder.Services.AddScoped<IBranchesService, BranchesService>();
+builder.Services.AddScoped<IProducersService, ProducersService>();
+builder.Services.AddScoped<ICountriesService, CountriesService>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
 
 var app = builder.Build();
 

@@ -30,5 +30,10 @@ namespace AsifNutsNSeeds.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Product_Branch> Product_Branches{ get; set; }
+
+        //orders
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
