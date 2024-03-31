@@ -1,5 +1,7 @@
 ﻿using AsifNutsNSeeds.Data.Enums;
+using AsifNutsNSeeds.Data.Static;
 using AsifNutsNSeeds.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AsifNutsNSeeds.Data
 {
@@ -187,6 +189,55 @@ namespace AsifNutsNSeeds.Data
 
 			}
 
+
+
+		}
+
+		public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+		{
+			using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+			{
+				// Roles Section
+				var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+				if(!await roleManager.RoleExistsAsync(UserRoles.Admin))
+					await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+				if (!await roleManager.RoleExistsAsync(UserRoles.User))
+					await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+				// Users
+				var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+				var adminUserEmail = "admin@AsifNutsNSeeds.com";
+				var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+				if (adminUser == null)
+				{
+					var newAdminUser = new ApplicationUser()
+					{
+						Fullname = "Admin user",
+						UserName = "admin-user",
+						Email = adminUserEmail,
+						EmailConfirmed = true
+
+					};
+					await userManager.CreateAsync(newAdminUser, "Coding@1234?");
+					await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+				}
+
+				var appUserEmail = "user@AsifNutsNSeeds.com";
+				var appUser = await userManager.FindByEmailAsync(appUserEmail);
+				if (appUser == null)
+				{
+					var newAppUser = new ApplicationUser()
+					{
+						Fullname = "Application user",
+						UserName = "app-user",
+						Email = appUserEmail,
+						EmailConfirmed = true
+
+					};
+					await userManager.CreateAsync(newAppUser, "Coding@1234?");
+					await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
+				}
+			}
 
 
 		}
