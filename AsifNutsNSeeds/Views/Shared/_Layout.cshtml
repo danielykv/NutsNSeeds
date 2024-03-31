@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Products" asp-action="Index">AsifNutsNSeeds</a>
+                <a class="navbar-brand" asp-controller="Products" asp-action="Index"><img src="https://hamamanuts.co.il/cdn/shop/files/copyof_Logo_Hamama_Nuts_Online.png?v=1680510380&width=160" width="70%"alt="Alternate Text" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -40,13 +40,13 @@
 
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" style="padding-right: 25px;">
+                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" >
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a Product..." aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     </form>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search" ></i></button>
 
                     <ul class="navbar-nav">
-                        @await Component.InvokeAsync("ShoppingCartSummary")
+                        @await Component.InvokeAsync("ShoppingCartSummary") 
                     </ul>
                     <partial name="_Identity.cshtml" />
 

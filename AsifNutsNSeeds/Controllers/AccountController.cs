@@ -4,6 +4,7 @@ using AsifNutsNSeeds.Data.ViewModels;
 using AsifNutsNSeeds.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AsifNutsNSeeds.Controllers
 {
@@ -17,6 +18,12 @@ namespace AsifNutsNSeeds.Controllers
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_context = context;
+		}
+
+		public async Task<IActionResult> Users()
+		{
+			var users = await _context.Users.ToListAsync();
+			return View(users);
 		}
 
 		public IActionResult Login() => View(new LoginVM());
