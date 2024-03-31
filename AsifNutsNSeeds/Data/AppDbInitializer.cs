@@ -16,8 +16,8 @@ namespace AsifNutsNSeeds.Data
 
 				context.Database.EnsureCreated();
 
-				//Countries
-				if (!context.Countries.Any())
+                //Countries
+                if (!context.Countries.Any())
 				{
 					context.Countries.AddRange(new List<Country>()
 						{

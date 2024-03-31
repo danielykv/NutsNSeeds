@@ -10,9 +10,13 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow" style="display: flex;
+    flex-direction: column;">
+            <a asp-controller="Products" asp-action="Index" style="display: flex; justify-content: center"><img src="https://r2.easyimg.io/fiv8nuih1/asifnuts-copilot-25.png" width="70%" alt="Alternate Text" /></a>
+        </nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Products" asp-action="Index"><img src="https://hamamanuts.co.il/cdn/shop/files/copyof_Logo_Hamama_Nuts_Online.png?v=1680510380&width=160" width="70%"alt="Alternate Text" /></a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,7 +24,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class="bi bi-film"></i> Products</a>
+                            <a class="btn btn-outline-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class="bi bi-nut"></i> Products</a>
                         </li>
 
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -43,7 +47,7 @@
                     <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" >
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a Product..." aria-label="Recipient's username" aria-describedby="button-addon2">
                     </form>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search" ></i></button>
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
 
                     <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary") 
