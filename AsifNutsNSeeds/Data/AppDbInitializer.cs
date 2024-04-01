@@ -42,8 +42,28 @@ namespace AsifNutsNSeeds.Data
 								CountryBio = "Located near the beautiful coastline of Ashkelon, this branch offers a diverse selection of nuts and seeds. It’s the perfect place to grab a healthy snack after a day at the beach.\r\n"
 							},
 
+                            new Country()
+                            {
+                                CountryName = "Brazil",
+                                ProfilePictureURL = "https://th.bing.com/th/id/R.1c50cfe9aa6fa2ea3f17270e276b66b0?rik=LjXzIFc%2bx1PLUA&pid=ImgRaw&r=0",
+                                CountryBio = "Native to the Amazon rainforest, Brazil nuts grow on tall trees in countries like Brazil, Peru, and Bolivia. Harvesting: Gatherers collect fallen fruits during the rainy season, cracking open the hard shells to reveal the edible seeds. Nutritional Value: Brazil nuts are rich in selenium and healthy fats. Culinary Uses: Enjoyed as a snack or used in recipes, they add a unique flavor and crunch. Fun Fact: The world’s largest Brazil nut tree covers an area of 7,500 square meters in Natal, Brazil! 🌴🌰\r\n"
+                            },
 
-						});
+                             new Country()
+                            {
+                                CountryName = "Bolivia",
+                                ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/1280px-Flag_of_Bolivia.svg.png",
+                                CountryBio = "Brazil Nuts (Actually Bolivia Nuts): These seeds, often called Brazil nuts\r\n"
+                            },
+
+                            new Country()
+                            {
+                                CountryName = "Mexico",
+                                ProfilePictureURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1920px-Flag_of_Mexico.svg.png",
+                                CountryBio = "While Mexico is known for its vibrant cuisine, its indigenous cultures have long appreciated nuts and seeds.\r\n"
+                            },
+
+                        });
 
 					context.SaveChanges();
 
@@ -120,11 +140,11 @@ namespace AsifNutsNSeeds.Data
 						{
 							new Product()
 							{
-								ProductName = "Guatemala",
-								ProductDescription = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks.",
+								ProductName = "Cashew",
+								ProductDescription = "Cashew nuts, derived from the cashew apple, are versatile and nutritious. They’re rich in healthy fats and protein.",
 								ProductPrice = 20,
-								ImageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/1200px-Flag_of_Guatemala.svg.png",
-								CountryID = 1,
+								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/fdd39d92-ca17-4341-8eca-e8286d69e472.jpg?v=1681655158&width=713",
+								CountryID = 4,
 								ProducerID = 1,
 								productCategory = ProductCategory.NutsAndSeeds
 
@@ -133,28 +153,60 @@ namespace AsifNutsNSeeds.Data
 
 							new Product()
 							{
-								ProductName = "Matok",
-								ProductDescription = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks.",
+								ProductName = "Peanuts",
+								ProductDescription = "Peanuts are a nutritious legume. They are high in protein, healthy fats, and various nutrients.",
 								ProductPrice = 20,
-								ImageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/1200px-Flag_of_Guatemala.svg.png",
-								CountryID = 3,
+								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/baf198ef-1489-4d4e-8338-8968c86b92f4.jpg?v=1681655423&width=493",
+								CountryID = 5,
 								ProducerID = 1,
-								productCategory = ProductCategory.Sweets
-							},
+								productCategory = ProductCategory.NutsAndSeeds
+                            },
 
 							new Product()
 							{
-								ProductName = "Camon",
-								ProductDescription = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks.",
+								ProductName = "Walnut",
+								ProductDescription = "Walnuts are nutritious tree nuts that are rich in healthy fats, antioxidants, and essential vitamins and minerals.",
 								ProductPrice = 20,
-								ImageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/1200px-Flag_of_Guatemala.svg.png",
-								CountryID = 2,
+								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.09.08.png?v=1681726285&width=713",
+								CountryID = 4,
 								ProducerID = 2,
-								productCategory = ProductCategory.Spices
-							},
+								productCategory = ProductCategory.NutsAndSeeds
+                            },
 
+                            new Product()
+                            {
+                                ProductName = "Pecan",
+                                ProductDescription = "Pecans are delicious tree nuts known for their rich, buttery flavor and versatility in both sweet and savory dishes. ",
+                                ProductPrice = 20,
+                                ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.13.50.png?v=1681726462&width=713",
+                                CountryID = 4,
+                                ProducerID = 2,
+                                productCategory = ProductCategory.NutsAndSeeds
+                            },
 
-						});
+         
+                            new Product()
+                            {
+                                ProductName = "Almond",
+                                ProductDescription = "Almonds are nutritious seeds from the fruit of an almond tree. They are rich in healthy fats, protein, and essential vitamins and minerals.",
+                                ProductPrice = 20,
+                                ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.15.22.png?v=1681726547&width=713",
+                                CountryID = 4,
+                                ProducerID = 2,
+                                productCategory = ProductCategory.NutsAndSeeds
+                            },
+
+                             new Product()
+                            {
+                                ProductName = "Sunflower seed",
+                                ProductDescription = "Sunflower seeds are rich in healthy fats, protein, fiber, and essential nutrients such as vitamin E and selenium.",
+                                ProductPrice = 20,
+                                ImageURL = "https://hamamanuts.co.il/cdn/shop/products/ae7ebedf-54da-4b9e-847c-10f8571d8581.webp?v=1681659679&width=713",
+                                CountryID = 4,
+                                ProducerID = 2,
+                                productCategory = ProductCategory.NutsAndSeeds
+                            },
+                        });
 
 					context.SaveChanges();
 				}

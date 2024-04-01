@@ -23,7 +23,7 @@
                                     @item.ProductName
                                     @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                     {
-                                        <a class="float-right btn btn-outline-dark" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                        <a class="float-right btn btn-outline-light" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                                     }
                                 </h5>
                             </p>
