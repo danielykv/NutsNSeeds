@@ -5,71 +5,78 @@
 @{
 	ViewData["Title"] = "Shopping cart summary";
 }
-<div class="row">
-	<div class="col-md-8 offset-2">
-		<div class="text-center">
-			<h2>Your shopping cart summary</h2>
-		</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Selected amount</th>
-					<th>Product</th>
-					<th>Price</th>
-					<th>Subtotal</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-			@foreach (var item in Model.ShoppingCart.ShoppingCartItems)
-			{
-					<tr>
-						<td class="align-middle">@item.Amount</td>
-						<td class="align-middle">@item.Product.ProductName</td>
-						<td class="align-middle">@item.Product.ProductPrice.ToString("c")</td>
-						<td class="align-middle">@((item.Amount*item.Product.ProductPrice).ToString("c"))</td>
-						<td class="align-middle">
-							<a class="text-center" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id">
-								<i class="bi bi-cart-dash"></i>
-							</a>
-							<a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id">
-								<i class="bi bi-cart-plus"></i>
-							</a>
-						</td>
-					</tr>
-				}
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="2">
 
-					</td>
-					<td><b>Total:</b></td>
-					<td> @Model.ShoppingCartTotal.ToString("c")
-					</td>
-					<td></td>
-				</tr>
 
-			</tfoot>
-		</table>
 
-		<div class="text-right">
-			<div class="btn-group">
-				<a class="btn btn-outline-primary"  asp-action="CompleteOrder">
-					Complete Order
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
 
-				</a>
-				<div id="paypal-btn"></div>
-				<span style="padding:5px"> </span>
-				<a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">
-					Add more items
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
+                   
+                </div>
 
-				</a>
-			</div>
-		</div>
-	</div>
+                @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                {
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <img src="@item.Product.ImageURL" class="img-fluid rounded-3" alt="@item.Product.ProductName">
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <p class="lead fw-normal mb-2">@item.Product.ProductName</p>
+                                   
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                   
+									<a class="text-center" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id">
+                                        <i class="bi bi-dash" style="font-size: 24px;"></i>
+									</a>
+									<span class="form-control form-control-sm border border-secondary">@item.Amount</span>
+									<a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id">
+                                        <i class="bi bi-plus" style="font-size: 24px;"></i>
+									</a>
+                                    
+                                </div>
+                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+									<h5 class="mb-0">@((item.Amount * item.Product.ProductPrice).ToString("c"))</h5>
+                                </div>
+                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                    <a href="@Url.Action("RemoveItemFromShoppingCart", "Orders", new { id = @item.Product.Id })" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
 
-</div>
+
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-4">
+                            <div id="paypal-btn"></div>
+                        </div>
+                       
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-between p-2 mb-2" style="background-color: #eeeeee;">
+                                <h5 class="fw-bold mb-0">Total:</h5>
+                                <h5 class="fw-bold mb-0" style="margin-left: auto;">@Model.ShoppingCartTotal.ToString("c")</h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
 
 @section Scripts {
 
@@ -89,7 +96,7 @@
 			//Customize button
 			locale: 'en_US',
 			style: {
-				size: 'small',
+				size: 'medium',
 				color: 'gold',
 				shape: 'pill'
 			},

@@ -44,14 +44,14 @@
 
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" >
-                        <input name="searchString" type="text" class="form-control" placeholder="Search for a Product..." aria-label="Recipient's username" aria-describedby="button-addon2">
-                    </form>
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
-
                     <ul class="navbar-nav">
                         @await Component.InvokeAsync("ShoppingCartSummary") 
                     </ul>
+
+                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" >
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for a Product..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    </form>
+                    <button class="m-2 btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     <partial name="_Identity.cshtml" />
 
                 </div>

@@ -10,7 +10,7 @@
             <h4>List of all users</h4>
         </p>
 
-        <table class="table">
+        <table class="table table-responsive shadow table-striped border">
             <thead>
                 <tr class="text-center">
                     <th>@Html.DisplayNameFor(model => model.Fullname)</th>
@@ -21,7 +21,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
+                    <tr class="text-center">
                     <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Fullname)
                     </td>

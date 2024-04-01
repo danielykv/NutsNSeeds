@@ -9,25 +9,27 @@
 
 	<div class="col-md-8 offset-md-2">
 		 
-		<table class="table">
+		<table class="table table-responsive shadow table-striped border">
+
 			<thead>
-				<tr>
+				<tr class="align-middle text-center">
 					<th>@Html.DisplayNameFor(model => model.Logo) </th>
-					<th>@Html.DisplayNameFor(model => model.BranchName) </th>
+					<th style="width: 10%;">@Html.DisplayNameFor(model => model.BranchName) </th>
 					<th>@Html.DisplayNameFor(model => model.BranchDescription) </th>
 					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 					{
-					<th>Actions</th>
+						<th style="width: 23%;">Actions</th>
+
 					}
 				</tr>
 				</thead>
 			<tbody>
 				@foreach (var item in Model)
 				{
-					<tr>
+					<tr class="align-middle text-center">
 
 						<td class="align-middle">
-							<img class="rounded-circle" src="@item.Logo" alt="@item.BranchName" style="max-width: 150px" />
+							<img  src="@item.Logo" alt="@item.BranchName" style="max-width: 150px; max-height:150px;" />
 						</td>
 
 						<td class="align-middle">
@@ -40,8 +42,8 @@
 						@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 						{
 						<td class="align-middle">
-							<a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
-							<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a>
+							<a class="btn btn-outline-dark" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
+							<a class="btn btn-outline-dark" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a>
 							<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
 						</td>
 

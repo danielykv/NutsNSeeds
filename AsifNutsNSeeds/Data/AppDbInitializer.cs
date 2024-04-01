@@ -77,21 +77,21 @@ namespace AsifNutsNSeeds.Data
 							new Branch()
 							{
 								BranchName = "Netivot",
-								Logo = "",
+								Logo = "https://th.bing.com/th/id/OIP.O_ij5xfdd47P4qkcXUPfywHaEb?rs=1&pid=ImgDetMain",
 								BranchDescription = "Our Netivot branch is a haven for health enthusiasts, offering a wide variety of nuts and seeds. Located in the heart of the city, it’s a convenient stop for your daily dose of nutritious snacks."
 							},
 
 							new Branch()
 							{
 								BranchName = "Ofakim",
-								Logo = "",
+								Logo = "https://www.claude.co.il/Pictures/20220426144118.551.jpg",
 								BranchDescription = "Situated in the bustling city of Ofakim, this branch boasts an extensive range of high-quality nuts and seeds. Its friendly staff and cozy atmosphere make it a favorite among locals.\r\n"
 							},
 
 							new Branch()
 							{
 								BranchName = "Ashkelon",
-								Logo = "",
+								Logo = "https://www.korenvs.com/wp-content/uploads/2022/01/151-thumb.jpg",
 								BranchDescription = "Located near the beautiful coastline of Ashkelon, this branch offers a diverse selection of nuts and seeds. It’s the perfect place to grab a healthy snack after a day at the beach.\r\n"
 							},
 

@@ -12,19 +12,19 @@
 			<h4>List of all your orders</h4>
 		</p>
 
-		<table class="table">
-			<thead>
+		<table class="table table-responsive shadow border">
+			<thead class="text-center">
 				<tr>
 					<th>Order ID</th>
 					<th>Items</th>
-					<th>Total</th
-					@if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+					<th>Total</th>
+					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 					{
-					<th>Users</th>
+						<th>User</th>
 					}
-				</tr>
+				</tr>	
 			</thead>
-			<tbody>
+			<tbody class="text-center">
 				@foreach (var order in Model)
 				{
 					<tr>
@@ -34,7 +34,7 @@
 								@foreach (var item in order.OrderItems)
 								{
 									<li>
-										<div class="alert alert-info" role="alert">
+										<div class="alert" style="background-color: #00ff6812;" role="alert">
 											<span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c")] - @item.product.ProductName
 										</div>
 									</li>
