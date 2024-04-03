@@ -1,50 +1,50 @@
 ﻿@model Country
 @{
-	ViewData["Title"] = "Delete country";
-
+    ViewData["Title"] = "Delete country";
 }
 
-
-<div class="row text">
-    <div class="col-md-8 offset-2">
-        <h1>Delete confirmation for @Model.CountryName</h1>
-        <div class="table-responsive shadow table-striped border m-4">
-
-            <div class="form-group text-center">
-                <img class="border-info mt-4" style="max-width: 150px" id="LogoPreview" />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center">Delete confirmation for @Model.CountryName</h1>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group text-center">
+                        <img class="border-info mt-4" style="max-width: 150px" id="LogoPreview" />
+                    </div>
+                    <form class="m-4" asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="form-group m-2">
+                            <label asp-for="ProfilePictureURL" class="control-label"></label>
+                            <input asp-for="ProfilePictureURL" class="form-control" readonly>
+                            <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
+                        </div>
+                        <div class="form-group m-2">
+                            <label asp-for="CountryName" class="control-label"></label>
+                            <input asp-for="CountryName" class="form-control" readonly>
+                            <span asp-validation-for="CountryName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group m-2">
+                            <label asp-for="CountryBio" class="control-label"></label>
+                            <input asp-for="CountryBio" class="form-control" readonly>
+                            <span asp-validation-for="CountryBio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group m-3">
+                            <input type="submit" value="Delete" class="btn btn-danger float-right" />
+                            <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form class="m-4" asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="ProfilePictureURL" class="control-label"></label>
-                    <input asp-for="ProfilePictureURL" class="form-control" readonly>
-                    <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CountryName" class="control-label"></label>
-                    <input asp-for="CountryName" class="form-control" readonly>
-                    <span asp-validation-for="CountryName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CountryBio" class="control-label"></label>
-                    <input asp-for="CountryBio" class="form-control" readonly>
-                    <span asp-validation-for="CountryBio" class="text-danger"></span>
-                </div>
-                <div class="form-group mt-2">
-                    <input type="submit" value="Delete" class="btn btn-danger float-right" />
-                    <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
-                </div>
-            </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
-	<script>
-		$(document).ready(function () {
-			var output = document.getElementById('LogoPreview')
-			output.src = $("#ProfilePictureURL").val();
-		})
-	</script>
-
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById('LogoPreview')
+            output.src = $("#ProfilePictureURL").val();
+        })
+    </script>
 }

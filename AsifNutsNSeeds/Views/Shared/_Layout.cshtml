@@ -24,7 +24,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="btn btn-outline-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class="bi bi-nut"></i> Products</a>
+                            <a class="btn btn-outline-dark mt-2" asp-area="" asp-controller="Products" asp-action="Index"><i class="bi bi-nut"></i> Products</a>
                         </li>
 
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -48,10 +48,10 @@
                         @await Component.InvokeAsync("ShoppingCartSummary") 
                     </ul>
 
-                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" >
+                    <form class="form-inline my-2 my-lg-0" asp-controller="Products" asp-action="Filter" style="display: flex;">
                         <input name="searchString" type="text" class="form-control" placeholder="Search for a Product..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="m-2 btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     </form>
-                    <button class="m-2 btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     <partial name="_Identity.cshtml" />
 
                 </div>

@@ -5,11 +5,16 @@
 }
 
 
+@if (Model.Any()) {
+    <div class="mb-4" style="display: flex; justify-content: center;">
+        <img src="https://r2.easyimg.io/6vloqd115/asifnutsbanner.png" width="100%" alt="Alternate Text" />
+        </div>
+}
 
-<div class="mb-4" style="display: flex; justify-content: center;">
-    <img src="https://r2.easyimg.io/6vloqd115/asifnutsbanner.png" width="100%" alt="Alternate Text" />
-    </div>
-<div class="row">
+    <div class="row">
+    
+    @if (Model.Any())
+{
 	@foreach (var item in Model)
 	{
 
@@ -60,9 +65,28 @@
                 </div>
             </div>
         </div>
-	}
+        }
 
+    } else
+    {
+        <section>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="card text-center">
+                            <div class="card-body text-white" style="background-color: #554a47;">
 
+                                <h3 class="card-title mt-3">Sorry, no product has found.</h3>
+                            </div>
+                            <div class="card-body">
+                                <a href="" class="btn btn-dark">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
 
 
 

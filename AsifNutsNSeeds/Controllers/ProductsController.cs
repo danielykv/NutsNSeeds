@@ -27,18 +27,20 @@ namespace AsifNutsNSeeds.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                //var filteredResult = allProducts.Where(n => n.Name.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+                var filteredResult = allProducts.Where(n =>
+                    n.ProductName.ToLower().Contains(searchString.ToLower()) ||
+                    n.ProductDescription.ToLower().Contains(searchString.ToLower())
+                ).ToList();
 
-                var filteredResultNew = allProducts.Where(n => string.Equals(n.ProductName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.ProductDescription, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
-
-                return View("Index", filteredResultNew);
+                return View("Index", filteredResult);
             }
 
             return View("Index", allProducts);
         }
 
-            //GET: Movies/Details/1
-            [AllowAnonymous]
+
+        //GET: Movies/Details/1
+        [AllowAnonymous]
 		public async Task<IActionResult> Details(int id)
 		{
 			var productDetail = await _service.GetProductByIdAsync(id);

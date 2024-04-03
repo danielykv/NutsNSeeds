@@ -75,9 +75,30 @@ namespace AsifNutsNSeeds.Controllers
 			var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
 			if (newUserResponse.Succeeded)
+			{
 				await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+				return View("RegisterCompleted");
 
-			return View("RegisterCompleted");
+			}
+			else
+			{
+				foreach (var error in newUserResponse.Errors)
+				{
+					if (error.Code == "PasswordRequiresDigit")
+						ModelState.AddModelError("Password", "Password must contain at least one digit.");
+					else if (error.Code == "PasswordRequiresLower")
+						ModelState.AddModelError("Password", "Password must contain at least one lowercase letter.");
+					else if (error.Code == "PasswordRequiresUpper")
+						ModelState.AddModelError("Password", "Password must contain at least one uppercase letter.");
+					else if (error.Code == "PasswordRequiresNonAlphanumeric")
+						ModelState.AddModelError("Password", "Password must contain at least one special character.");
+					else if (error.Code == "PasswordTooShort")
+						ModelState.AddModelError("Password", "Password must be at least 6 characters long.");
+					else
+						ModelState.AddModelError("", error.Description);
+				}
+				return View(registerVM);
+			}
 		}
 
 		[HttpPost]
