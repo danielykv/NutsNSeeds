@@ -9,7 +9,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title text-center">List of all your orders</h4>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <h4 class="card-title text-center">List of all the orders</h4>
+                    }
+                    else
+                    {
+                        <h4 class="card-title text-center">List of all your orders</h4>
+                    }
 
                     <div class="table-responsive shadow border">
                         <table class="table">
@@ -18,6 +25,11 @@
                                     <th>Order ID</th>
                                     <th>Items</th>
                                     <th>Total</th>
+                                    <th>Address</th> <!-- New column for address -->
+                                    <th>City</th> <!-- New column for city -->
+                                    <th>Postal Code</th> <!-- New column for postal code -->
+                                    <th>Order Date</th> <!-- New column for order date -->
+                                    <th>Status</th> <!-- New column for status -->
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                     {
                                         <th>User</th>
@@ -44,6 +56,11 @@
                                         <td class="align-middle">
                                             @order.OrderItems.Select(m => m.product.ProductPrice * m.Amount).Sum().ToString("c")
                                         </td>
+                                        <td class="align-middle">@order.Address</td> <!-- Display order address -->
+                                        <td class="align-middle">@order.City</td> <!-- Display order city -->
+                                        <td class="align-middle">@order.PostalCode</td> <!-- Display order postal code -->
+                                        <td class="align-middle">@order.OrderDate.ToString("MM/dd/yyyy")</td> <!-- Display order date -->
+                                        <td class="align-middle">@GetOrderStatus(order.OrderDate)</td> <!-- Display order status -->
                                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                         {
                                             <td class="align-middle">@order.User.Fullname</td>
@@ -58,3 +75,25 @@
         </div>
     </div>
 </div>
+
+@functions {
+    public string GetOrderStatus(DateTime orderDate)
+    {
+        // Calculate the difference between the order date and the current date
+        TimeSpan difference = DateTime.Now - orderDate;
+
+        // Check the number of days difference
+        if (difference.TotalDays < 2)
+        {
+            return "Order Received";
+        }
+        else if (difference.TotalDays >= 2 && difference.TotalDays <= 10)
+        {
+            return "Left to Destination Country";
+        }
+        else
+        {
+            return "Order Completed";
+        }
+    }
+}

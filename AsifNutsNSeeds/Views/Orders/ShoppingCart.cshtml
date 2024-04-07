@@ -3,19 +3,15 @@
 @model ShoppingCartVM
 
 @{
-	ViewData["Title"] = "Shopping cart summary";
+    ViewData["Title"] = "Shopping cart summary";
 }
-
-
 
 <section class="h-100" style="background-color: #eee;">
     <div class="container h-100 py-5">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-10">
-
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
-                   
                 </div>
 
                 @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
@@ -28,21 +24,18 @@
                                 </div>
                                 <div class="col-md-3 col-lg-3 col-xl-3">
                                     <p class="lead fw-normal mb-2">@item.Product.ProductName</p>
-                                   
                                 </div>
                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                   
-									<a class="text-center" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id">
+                                    <a class="text-center" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id">
                                         <i class="bi bi-dash" style="font-size: 24px;"></i>
-									</a>
-									<span class="form-control form-control-sm border border-secondary">@item.Amount</span>
-									<a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id">
+                                    </a>
+                                    <span class="form-control form-control-sm border border-secondary text-center">@item.Amount</span>
+                                    <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id">
                                         <i class="bi bi-plus" style="font-size: 24px;"></i>
-									</a>
-                                    
+                                    </a>
                                 </div>
                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-									<h5 class="mb-0">@((item.Amount * item.Product.ProductPrice).ToString("c"))</h5>
+                                    <h5 class="mb-0">@((item.Amount * item.Product.ProductPrice).ToString("c"))</h5>
                                 </div>
                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                     <a href="@Url.Action("RemoveItemFromShoppingCart", "Orders", new { id = @item.Product.Id })" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
@@ -52,34 +45,66 @@
                     </div>
                 }
 
-
                 <div class="card">
                     <div class="card-body row">
                         <div class="col-md-4">
                             @if (User.Identity.IsAuthenticated)
                             {
-                            <div id="paypal-btn"></div>
-                                
+                                <div id="paypal-btn"></div>
                             }
                             else
                             {
-                                <a class="btn btn-outline-dark my-2 my-sm-0" asp-controller="Account" asp-action="Login">
-                                    <i class="bi bi-box-arrow-in-right"></i> Log in
+                                <a id="buyAsGuestBtn" class="btn btn-outline-dark my-2 my-sm-0">
+                                    <i class="bi bi-box-arrow-in-right"></i> Buy as a guest
                                 </a>
                             }
                         </div>
-                       
                         <div class="col-md-4">
                             <div class="d-flex justify-content-between p-2 mb-2" style="background-color: #eeeeee;">
                                 <h5 class="fw-bold mb-0">Total:</h5>
                                 <h5 class="fw-bold mb-0" style="margin-left: auto;">@Model.ShoppingCartTotal.ToString("c")</h5>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
 
+                <div id="guestCheckoutForm" style="display: none;" class="m3">
+
+                    <h3 class="fw-normal mb-3 text-black">Guest Checkout</h3>
+                    <p class="fw-normal mb-2 text-black">Log in to track your order:</p> <!-- Added message for user -->
+                    <a class="btn btn-dark my-2 my-sm-0 mb-2" asp-controller="Account" asp-action="Login">
+
+                        <i class="bi bi-box-arrow-in-right"></i> Log in
+                    </a>
+                    <form class="m-2" id="guestForm" action="@Url.Action("CompleteOrderByGuest", "Orders")" method="post">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="Address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Postal Code</label>
+                            <input type="text" class="form-control" id="postalCode" name="PostalCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="City" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" name="Email" required>
+                        </div>
+                        <!-- Add a hidden input field for PayPal -->
+                        <input class="m-2" type="hidden" name="paymentMethod" value="PayPal">
+
+                        <!-- Replace the anchor tag with a button -->
+                        <button class="m-2" type="submit" id="paypal-btn">Buy as Guest</button>
+
+                       
+                    </form>
+                </div>
+
+
+            </div>
         </div>
     </div>
 </section>
@@ -89,49 +114,78 @@
 
 
 @section Scripts {
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
-	<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle display of guest checkout form
+            document.getElementById('buyAsGuestBtn').addEventListener('click', function () {
+                var guestForm = document.getElementById('guestCheckoutForm');
+                if (guestForm.style.display === 'none') {
+                    guestForm.style.display = 'block';
+                } else {
+                    guestForm.style.display = 'none';
+                }
+            });
 
-	<script>
+            
+        });
+    </script>
 
-		let _total = @Html.Raw(Model.ShoppingCartTotal);
+    <script>
+        let _total = @Html.Raw(Model.ShoppingCartTotal);
 
-		paypal.Button.render({
-			//Configure environment
-			env: 'sandbox',
-			client: {
-				sandbox: 'AUTvnAXyTBrAPKYWKMQQ18Lz6fne2EnROx0vkxeSRJzo3EHlFNk67UA-aMQfZXTOI65RkaKPZWL3UCan'
-			},
+        // Render PayPal button for guest checkout
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'AUTvnAXyTBrAPKYWKMQQ18Lz6fne2EnROx0vkxeSRJzo3EHlFNk67UA-aMQfZXTOI65RkaKPZWL3UCan'
+            },
+            // Customize button
+            locale: 'en_US',
+            style: {
+                size: 'medium',
+                color: 'gold',
+                shape: 'pill'
+            },
+            commit: true,
+            // Set up a payment
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+            // Execute the payment
+            onAuthorize: function (data, actions) {
+                return actions.payment.execute().then(function () {
+                    // Redirect to CompleteOrderByGuest action with form data
+                    console.log("onAuthorize function triggered");
 
-			//Customize button
-			locale: 'en_US',
-			style: {
-				size: 'medium',
-				color: 'gold',
-				shape: 'pill'
-			},
-			commit: true,
+                    document.getElementById('guestForm').submit();
 
-			//Set up a payment
-			payment: function (data, actions) {
-				return actions.payment.create({
-					transactions: [{
-						amount: {
-							total: _total,
-							currency: 'USD'
-						}
-					}]
-				});
-			},
+                    var address = document.getElementById('address').value;
+                    var postalCode = document.getElementById('postalCode').value;
+                    var city = document.getElementById('city').value;
+                    var email = document.getElementById('email').value;
+                    console.log(email);
 
-			//Execute the payment
-			onAuthorize: function (data, actions) {
-				return actions.payment.execute().then(function () {
-					var url = '@Url.Action("CompleteOrder", "Orders", new { })';
-					window.location.href = url;
-				});
-			}
+                    var url = '/Orders/CompleteOrderByGuest' +
+                        '?address=' + encodeURIComponent(address) +
+                        '&postalCode=' + encodeURIComponent(postalCode) +
+                        '&city=' + encodeURIComponent(city) +
+                        '&email=' + encodeURIComponent(email);
 
-		}, '#paypal-btn')
-	</script>
+                    console.log(url);
+
+                    window.location.href = url;
+                });
+            }
+        }, '#paypal-btn');
+    </script>
 }

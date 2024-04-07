@@ -22,6 +22,10 @@ namespace AsifNutsNSeeds.Data
         [Required(ErrorMessage = "Price is required")]
         public double ProductPrice { get; set; }
 
+        [Display(Name = "Stock")]
+        [Required(ErrorMessage = "Stock is required")]
+        public int Stock { get; set; }
+
         [Display(Name = "Product image URL")]
         [Required(ErrorMessage = "Product image URL is required")]
         public string ImageURL { get; set; }

@@ -24,7 +24,8 @@ namespace AsifNutsNSeeds.Data.Services
                 ImageURL = data.ImageURL,
                 CountryID = data.CountryID,
                 productCategory = data.ProductCategory,
-                ProducerID = data.ProducerID
+                ProducerID = data.ProducerID,
+                Stock = data.Stock,
             };
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
@@ -77,6 +78,7 @@ namespace AsifNutsNSeeds.Data.Services
                 dbProduct.CountryID = data.CountryID;
                 dbProduct.productCategory = data.ProductCategory;
                 dbProduct.ProducerID= data.ProducerID;
+                dbProduct.Stock= data.Stock;
                 await _context.SaveChangesAsync();
             }
 

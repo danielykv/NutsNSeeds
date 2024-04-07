@@ -35,5 +35,7 @@ namespace AsifNutsNSeeds.Models
         [ForeignKey("ProducerID")]
 
         public Producer Producer { get; set; }
+        public int Stock { get;set; }
+        public int Sold { get; set; }
     }
 }

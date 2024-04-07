@@ -18,6 +18,10 @@
                                     <th>@Html.DisplayNameFor(model => model.Fullname)</th>
                                     <th>@Html.DisplayNameFor(model => model.UserName)</th>
                                     <th>@Html.DisplayNameFor(model => model.Email)</th>
+                                    <!-- New table headers for address-related fields -->
+                                    <th>@Html.DisplayNameFor(model => model.Address)</th>
+                                    <th>@Html.DisplayNameFor(model => model.City)</th>
+                                    <th>@Html.DisplayNameFor(model => model.PostalCode)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,9 +37,20 @@
                                         <td class="align-middle">
                                             @Html.DisplayFor(modelItem => item.Email)
                                         </td>
+                                        <!-- New table data cells for address-related fields -->
+                                        <td class="align-middle">
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td class="align-middle">
+                                            @Html.DisplayFor(modelItem => item.City)
+                                        </td>
+                                        <td class="align-middle">
+                                            @Html.DisplayFor(modelItem => item.PostalCode)
+                                        </td>
                                     </tr>
                                 }
                             </tbody>
+
                         </table>
                     </div>
                 </div>

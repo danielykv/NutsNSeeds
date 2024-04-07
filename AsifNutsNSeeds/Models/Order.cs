@@ -12,6 +12,14 @@ namespace AsifNutsNSeeds.Models
 
         public string UserId { get; set; }
 
+        public string Address { get; set; }
+
+        public string City { get; set; }
+
+        public string PostalCode { get; set; }
+        public DateTime OrderDate { get; set; } // Add this property for OrderDate
+
+
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; }
 

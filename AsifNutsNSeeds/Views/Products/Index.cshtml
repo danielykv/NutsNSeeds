@@ -1,32 +1,93 @@
 ﻿@model IEnumerable<Product>
 
+@using AsifNutsNSeeds.Data
+@using AsifNutsNSeeds.Data.Enums
+
 @{
-	ViewData["Title"] = "List of Products";
+    ViewData["Title"] = "List of Products";
 }
 
-
-@if (Model.Any()) {
+@if (Model.Any())
+{
     <div class="mb-4" style="display: flex; justify-content: center;">
         <img src="https://r2.easyimg.io/6vloqd115/asifnutsbanner.png" width="100%" alt="Alternate Text" />
-        </div>
+    </div>
 }
-
-    <div class="row">
-    
-    @if (Model.Any())
+else
 {
-	@foreach (var item in Model)
-	{
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3 class="card-title">Sorry, no products were found.</h3>
+                        <p class="card-text">Please try a different search or check back later.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+}
+<div class="text-center mb-3">
+    <button id="filterToggleBtn" class="btn btn-dark">Filter</button>
+</div>
+
+<div id="filterBlock" style="display: none;">
+    <div class="text-center">
+        <div class="btn-group" role="group" aria-label="Sort Products">
+            <a class="btn btn-dark m-2" asp-action="FilterByPriceLowToHigh">Sort by Price Low to High</a>
+            <a class="btn btn-dark m-2" asp-action="FilterByPriceHighToLow">Sort by Price High to Low</a>
+            <a class="btn btn-dark m-2" asp-action="FilterByPopularity">Sort by Popularity</a>
+        </div>
+
+        <form asp-action="FilterByCategory" asp-controller="Products" method="get" class="mt-3">
+            <div class="form-group d-inline-block align-middle">
+                <select name="category" id="category" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-dark ml-2 align-middle">Filter by Category</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <div class="d-flex justify-content-center">
+                <form asp-action="FilterByPriceRange" asp-controller="Products" method="get">
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label for="minPrice" class="sr-only">Minimum Price</label>
+                            <input type="number" class="form-control" id="minPrice" name="minPrice" placeholder="Min Price" required>
+                        </div>
+                        <div class="col-auto">
+                            <label for="maxPrice" class="sr-only">Maximum Price</label>
+                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="Max Price" required>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-dark m-2">Filter by Price Range</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
         <div class="col-md-4 col-xs-6 border-primary mb-3">
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-3" style="max-width: 600px;">
                 <div class="row g-0">
                     <div class="col-md-12">
                         <div class="card-header text-white bg-dark">
                             <p class="card-text">
                                 <h5 class="card-title">
                                     @item.ProductName
-                                    @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                     {
                                         <a class="float-right btn btn-outline-light" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                                     }
@@ -42,55 +103,75 @@
                             <p class="card-text">@item.ProductDescription</p>
                             <p class="card-text"><b>Country: </b>@item.Country.CountryName</p>
                             <p class="card-text"><b>Category: </b>@item.productCategory</p>
-                   
-                        
-
+                            @if (item.Stock > 0)
+                            {
+                                <p class="card-text text-success"><b>In stock</b></p>
+                            }
+                            else
+                            {
+                                <p class="card-text text-danger"><b>Not in stock</b></p>
+                            }
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="card-footer ">
+                        <div class="card-footer">
                             <p class="card-text">
                                 <a class="btn btn-outline-dark float-right" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
+                                    <i class="bi bi-eye-fill"></i>Details
                                 </a>
-                                <a class="btn btn-outline-dark"
-                                   asp-controller="Orders"
-                                   asp-action="AddItemToShoppingCart"
-                                    asp-route-id="@item.Id">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart (@item.ProductPrice.ToString("c")/100g)
-                                </a>
+                                @if (item.Stock > 0)
+                                {
+                                    <a class="btn btn-outline-dark"
+                                       asp-controller="Orders"
+                                       asp-action="BuyItemNow"
+                                       asp-route-id="@item.Id">
+                                        Buy now (@item.ProductPrice.ToString("c")/100g)
+                                    </a>
+                                    <a class="btn btn-outline-dark"
+                                       asp-controller="Products"
+                                       asp-action="AddItemToShoppingCart"
+                                       asp-route-id="@item.Id">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart (@item.ProductPrice.ToString("c")/100g)
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a class="btn btn-outline-dark"
+                                           asp-controller="Products"
+                                           asp-action="Notify"
+                                           asp-route-id="@item.Id">
+                                            <i class="bi bi-cart-plus"></i> Notify Me
+                                        </a>
+                                        
+                                    }
+                                }
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        }
-
-    } else
-    {
-        <section>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-6">
-                        <div class="card text-center">
-                            <div class="card-body text-white" style="background-color: #554a47;">
-
-                                <h3 class="card-title mt-3">Sorry, no product has found.</h3>
-                            </div>
-                            <div class="card-body">
-                                <a href="" class="btn btn-dark">Back</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     }
-
-
-
-
 </div>
+
+
+
+@section Scripts {
+    <script>
+        document.getElementById('filterToggleBtn').addEventListener('click', function () {
+            var filterBlock = document.getElementById('filterBlock');
+            if (filterBlock.style.display === 'none') {
+                filterBlock.style.display = 'block';
+            } else {
+                filterBlock.style.display = 'none';
+            }
+        });
+    </script>
+}
+
+
+
 
 @await Html.PartialAsync("_CreateItem", "Products")

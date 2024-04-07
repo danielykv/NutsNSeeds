@@ -5,6 +5,7 @@ using AsifNutsNSeeds.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace AsifNutsNSeeds.Controllers
 {
@@ -70,8 +71,12 @@ namespace AsifNutsNSeeds.Controllers
 			{
 				Fullname = registerVM.FullName,
 				Email = registerVM.EmailAddress,
-				UserName = registerVM.EmailAddress
-			};
+				UserName = registerVM.EmailAddress,
+				Address = registerVM.Address,
+                City = registerVM.City,
+				PostalCode = registerVM.PostalCode
+
+            };
 			var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
 			if (newUserResponse.Succeeded)
