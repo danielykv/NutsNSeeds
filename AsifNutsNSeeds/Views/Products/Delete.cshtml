@@ -1,12 +1,12 @@
-﻿@model Producer
+﻿@model Product
 @{
-    ViewData["Title"] = "Delete producer";
+    ViewData["Title"] = "Delete product";
 }
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 class="text-center">Delete confirmation for @Model.ProducerName</h1>
+            <h1 class="text-center">Delete confirmation for @Model.ProductName</h1>
             <div class="card">
                 <div class="card-body">
                     <div class="form-group text-center">
@@ -15,19 +15,19 @@
                     <form class="m-4" asp-action="Delete">
                         <input type="hidden" asp-for="Id" />
                         <div class="form-group m-2">
-                            <label asp-for="ProfilePictureURL" class="control-label"></label>
-                            <input asp-for="ProfilePictureURL" class="form-control" readonly>
-                            <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
+                            <label asp-for="ImageURL" class="control-label"></label>
+                            <input asp-for="ImageURL" class="form-control" readonly>
+                            <span asp-validation-for="ImageURL" class="text-danger"></span>
                         </div>
                         <div class="form-group m-2">
-                            <label asp-for="ProducerName" class="control-label"></label>
-                            <input asp-for="ProducerName" class="form-control" readonly>
-                            <span asp-validation-for="ProducerName" class="text-danger"></span>
+                            <label asp-for="ProductName" class="control-label"></label>
+                            <input asp-for="ProductName" class="form-control" readonly>
+                            <span asp-validation-for="ProductName" class="text-danger"></span>
                         </div>
                         <div class="form-group m-2">
-                            <label asp-for="ProducerBio" class="control-label"></label>
-                            <textarea asp-for="ProducerBio" class="form-control" readonly></textarea>
-                            <span asp-validation-for="ProducerBio" class="text-danger"></span>
+                            <label asp-for="ProductDescription" class="control-label"></label>
+                            <textarea asp-for="ProductDescription" class="form-control" readonly></textarea>
+                            <span asp-validation-for="ProductDescription" class="text-danger"></span>
                         </div>
                         <div class="form-group m-3">
                             <input type="submit" value="Confirm" class="btn btn-danger float-right" />
@@ -44,7 +44,7 @@
     <script>
         $(document).ready(function () {
             var output = document.getElementById('LogoPreview')
-            output.src = $("#ProfilePictureURL").val();
+            output.src = $("#ImageURL").val();
         })
     </script>
 }

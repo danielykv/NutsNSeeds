@@ -78,6 +78,8 @@
                         <div class="form-group m-3">
                             <input type="submit" value="Update" class="btn btn-outline-dark float-right" />
                             <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id"><i class="bi bi-trash"></i>Delete</a>
+
                         </div>
 
                     </form>

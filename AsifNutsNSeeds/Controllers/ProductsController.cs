@@ -166,7 +166,7 @@ namespace AsifNutsNSeeds.Controllers
 
 
         }
-        private string GenerateFilterQueryString(ProductCategory? category, double? minPrice, double? maxPrice, int page)
+        private string GenerateFilterQueryString(ProductCategory? category, string? searchString, double? minPrice, double? maxPrice,string? highToLow,string? lowToHigh, int page,string? popularity)
         {
             var queryString = "";
 
@@ -179,6 +179,18 @@ namespace AsifNutsNSeeds.Controllers
             if (maxPrice.HasValue)
                 queryString += $"&maxPrice={maxPrice.Value}";
 
+            if (searchString != null)
+                queryString = $"Filter?searchString={searchString}";
+
+            if (highToLow != null)
+                queryString = $"FilterByPriceLowToHigh";
+
+            if (lowToHigh != null)
+                queryString = $"FilterByPriceHighToLow";
+
+            if (popularity != null)
+                queryString = $"FilterByPopularity";
+
             return queryString;
         }
 
@@ -189,16 +201,18 @@ namespace AsifNutsNSeeds.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 var filteredResult = allProducts.Where(n =>
-                    n.ProductName.ToLower().Contains(searchString.ToLower()) ||
-                    n.ProductDescription.ToLower().Contains(searchString.ToLower())
+                    n.ProductName.ToLower().Contains(searchString.ToLower())
                 ).ToList();
 
+
                 var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+                var queryString = GenerateFilterQueryString(null, searchString, null, null,null,null, page,null);
+                ViewData["FilterQueryString"] = queryString;
 
                 return View("Index", paginatedResult);
             }
-
             var paginatedAllProducts = PaginatedList<Product>.Create(allProducts.ToList(), page, pageSize);
+
 
             return View("Index", paginatedAllProducts);
         }
@@ -210,6 +224,9 @@ namespace AsifNutsNSeeds.Controllers
             var filteredResult = allProducts.OrderBy(n => n.ProductPrice).ToList();
 
             var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+            var queryString = GenerateFilterQueryString(null, null, null, null,null,"string", page,null);
+            ViewData["FilterQueryString"] = queryString;
 
             return View("Index", paginatedResult);
         }
@@ -224,7 +241,7 @@ namespace AsifNutsNSeeds.Controllers
 
             var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
 
-            var queryString = GenerateFilterQueryString(null, minPrice, maxPrice, page);
+            var queryString = GenerateFilterQueryString(null,null, minPrice, maxPrice,null,null, page,null);
             ViewData["FilterQueryString"] = queryString;
 
             return View("Index", paginatedResult);
@@ -238,6 +255,9 @@ namespace AsifNutsNSeeds.Controllers
 
             var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
 
+            var queryString = GenerateFilterQueryString(null, null, null, null, "string" , null, page,null);
+            ViewData["FilterQueryString"] = queryString;
+
             return View("Index", paginatedResult);
         }
 
@@ -248,6 +268,11 @@ namespace AsifNutsNSeeds.Controllers
             var filteredResult = allProducts.OrderByDescending(n => n.Sold).ToList();
 
             var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+
+            var queryString = GenerateFilterQueryString(null, null, null, null, null, null, page, "string");
+
+            ViewData["FilterQueryString"] = queryString;
 
             return View("Index", paginatedResult);
         }
@@ -262,7 +287,7 @@ namespace AsifNutsNSeeds.Controllers
 
 
             var paginatedResult = PaginatedList<Product>.Create(filteredProducts.ToList(), page, pageSize);
-            var queryString = GenerateFilterQueryString(category, null, null, page);
+            var queryString = GenerateFilterQueryString(category,null, null, null,null,null, page,null);
             ViewData["FilterQueryString"] = queryString;
 
             return View("Index", paginatedResult);
@@ -273,6 +298,7 @@ namespace AsifNutsNSeeds.Controllers
 		public async Task<IActionResult> Details(int id)
 		{
 			var productDetail = await _service.GetProductByIdAsync(id);
+
 			return View(productDetail);
 		}
 
@@ -351,6 +377,24 @@ namespace AsifNutsNSeeds.Controllers
             }
 
             await _service.UpdateProductAsync(product);
+            return RedirectToAction(nameof(Index));
+        }
+
+        //GET: Countries/delete/1
+        public async Task<IActionResult> Delete(int id)
+        {
+            var productDetails = await _service.GetByIdAsync(id);
+            if (productDetails == null) return View("NotFound");
+            return View(productDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var productDetails = await _service.GetByIdAsync(id);
+            if (productDetails == null) return View("NotFound");
+
+            await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
