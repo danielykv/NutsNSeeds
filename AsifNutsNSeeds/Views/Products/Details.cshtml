@@ -1,76 +1,45 @@
 ﻿@model Product
 
 @{
-    ViewData["Title"] = "Product details";
+    ViewData["Title"] = "Product Details";
 }
 
-<div class="row">
-    <div class="col-md-8 offset-md-2">
-        <div class="card mb-12">
-            <div class="row g-0">
-                <div class="col-md-12">
-                    <div class="card-header text-white bg-dark">
-                        <p class="card-text">
-                            <h5 class="card-title">
-                                @Model.ProductName
-                            </h5>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <img src="@Model.ImageURL" width="100%" alt="@Model.ProductName">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <p class="card-text">@Model.ProductDescription</p>
-                        <p class="card-text">
-                            <b>Country: </b>
-                            <a asp-controller="Countries" asp-action="Details" asp-route-id="@Model.CountryID">
-                                @Model.Country.CountryName
-                            </a>
-                        </p>
-                        <p class="card-text">
-                            <b>Producer: </b>
-                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.ProducerID">
-                                @Model.Producer.ProducerName
-                            </a>
-                        </p>
-                        <p class="card-text"><b>Category: </b>@Model.productCategory</p>
-                        <p class="card-text">
-                            <b>Branches: </b>
-                            <hr />
-                            <div class="row">
-                                @foreach (var product in Model.Product_Branches)
-                                {
-                                    <div class="column text-center">
-                                        <img class="border-info rounded-circle" src="@product.Branch.Logo" style="max-width: 150px" />
-                                        <br />
-                                        <a asp-controller="Branches" asp-action="Details" asp-route-id="@product.Id">@product.Branch.BranchName</a>
-                                    </div>
-                                }
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-dark text-center">
+            <h3>@Model.ProductName</h3>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="@Model.ImageURL" class="card-img" alt="@Model.ProductName">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <p class="card-text">@Model.ProductDescription</p>
+                    <p class="card-text"><strong>Country:</strong> <a asp-controller="Countries" asp-action="Details" asp-route-id="@Model.CountryID">@Model.Country.CountryName</a></p>
+                    <p class="card-text"><strong>Producer:</strong> <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.ProducerID">@Model.Producer.ProducerName</a></p>
+                    <p class="card-text"><strong>Category:</strong> @Model.productCategory</p>
+                    <p class="card-text"><strong>Branches:</strong></p>
+                    <div class="row">
+                        @foreach (var product in Model.Product_Branches)
+                        {
+                            <div class="col text-center my-2">
+                                <img class="rounded-circle border border-info" src="@product.Branch.Logo" style="width: 100px; height: 100px; object-fit: cover;" />
+                                <p class="mt-2"><a asp-controller="Branches" asp-action="Details" asp-route-id="@product.Id">@product.Branch.BranchName</a></p>
                             </div>
-                        </p>
-
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="card-footer">
-                        <p class="card-text">
-                            <a class="btn btn-outline-secondary float-right" asp-action="Index">
-                                Back to List
-                            </a>
-                            @if (Model.Stock > 0)
-                            {
-
-                            <a class="btn btn-dark text-white"
-                               asp-controller="Orders" 
-                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.ProductPrice.ToString("c"))</a>
-                                
-                            }
-                        </p>
+                        }
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
+            @if (Model.Stock > 0)
+            {
+                <a class="btn btn-outline-dark" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id">
+                    <i class="bi bi-cart-plus"></i> Add to Cart (@Model.ProductPrice.ToString("c"))
+                </a>
+            }
         </div>
     </div>
 </div>

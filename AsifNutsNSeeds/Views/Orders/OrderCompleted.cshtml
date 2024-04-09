@@ -1,19 +1,24 @@
-﻿<section>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6">
-                <div class="card text-center">
-                    <div class="card-body text-white" style="background-color: #554a47;">
+﻿@model AsifNutsNSeeds.Models.Order
 
-                        <h3 class="card-title mt-3">Order Completed successfully</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">You can check all your orders in the order section of your profile</p>
-                    </div>
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-dark text-center">
+            <h3>Order Completed successfully</h3>
+        </div>
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h5>Order Details</h5>
+                    <p><strong>Order ID:</strong> @Model.OrderId.ToString()</p>
+                    <p><strong>Email:</strong> @Model.Email.ToString()</p>
+                    <p><strong>User ID:</strong> @Model.UserId.ToString()</p>
+                    <p><strong>Address:</strong> @Model.Address.ToString()</p>
+                    <p><strong>City:</strong> @Model.City.ToString()</p>
                 </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Additional content if needed -->
             </div>
         </div>
     </div>
-</section>
-
-
+</div>

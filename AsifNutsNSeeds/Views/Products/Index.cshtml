@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Product>
+﻿@model PaginatedList<Product> // Update model type to PaginatedList<Product>
 
-@using AsifNutsNSeeds.Data
-@using AsifNutsNSeeds.Data.Enums
+    @using AsifNutsNSeeds.Data
+    @using AsifNutsNSeeds.Data.Enums
 
 @{
     ViewData["Title"] = "List of Products";
@@ -9,169 +9,223 @@
 
 @if (Model.Any())
 {
-    <div class="mb-4" style="display: flex; justify-content: center;">
-        <img src="https://r2.easyimg.io/6vloqd115/asifnutsbanner.png" width="100%" alt="Alternate Text" />
-    </div>
+        <div class="mb-4" style="display: flex; justify-content: center;">
+            <img src="https://r2.easyimg.io/6vloqd115/asifnutsbanner.png" width="100%" alt="Alternate Text" />
+        </div>
 }
 else
 {
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h3 class="card-title">Sorry, no products were found.</h3>
-                        <p class="card-text">Please try a different search or check back later.</p>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title">Sorry, no products were found.</h3>
+                            <p class="card-text">Please try a different search or check back later.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+}
+
+    <div class="d-flex align-items-center mb-2 mt-2">
+        <a class="nav-link dropdown-toggle text-dark me-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-gear"></i> Sort
+        </a>
+        <button id="filterToggleBtn" class="btn align-content-center align-items-center">
+            <i class="bi bi-gear me-1"></i> Advance sorting
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item btn btn-dark m-2" asp-action="FilterByPriceLowToHigh">Sort by Price Low to High</a>
+            <a class="dropdown-item btn btn-dark m-2" asp-action="FilterByPriceHighToLow">Sort by Price High to Low</a>
+            <a class="dropdown-item btn btn-dark m-2" asp-action="FilterByPopularity">Sort by Popularity</a>
+        </div>
     </div>
 
-}
-<div class="text-center mb-3">
-    <button id="filterToggleBtn" class="btn btn-dark">Filter</button>
-</div>
-
-<div id="filterBlock" style="display: none;">
-    <div class="text-center">
-        <div class="btn-group" role="group" aria-label="Sort Products">
-            <a class="btn btn-dark m-2" asp-action="FilterByPriceLowToHigh">Sort by Price Low to High</a>
-            <a class="btn btn-dark m-2" asp-action="FilterByPriceHighToLow">Sort by Price High to Low</a>
-            <a class="btn btn-dark m-2" asp-action="FilterByPopularity">Sort by Popularity</a>
-        </div>
-
-        <form asp-action="FilterByCategory" asp-controller="Products" method="get" class="mt-3">
-            <div class="form-group d-inline-block align-middle">
-                <select name="category" id="category" class="form-control">
-                    <option value="">-- Select Category --</option>
-                    @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
-                    {
-                        <option value="@category">@category</option>
-                    }
-                </select>
+    <div id="filterBlock" style="display: none;">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4">
+                <form asp-action="FilterByCategory" asp-controller="Products" method="get" class="mt-3">
+                    <div class="form-group">
+                        <select name="category" id="category" class="form-control w-25">
+                            <option value="">-- Select Category --</option>
+                        @foreach (var category in Enum.GetValues(typeof(ProductCategory)))
+                        {
+                                <option value="@category">@category</option>
+                        }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-outline-dark mt-2 mb-2 w-25">Submit</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-dark ml-2 align-middle">Filter by Category</button>
-        </form>
 
-        <div class="text-center mt-3">
-            <div class="d-flex justify-content-center">
-                <form asp-action="FilterByPriceRange" asp-controller="Products" method="get">
+            <div class="col-md-4">
+                <form asp-action="FilterByPriceRange" asp-controller="Products" method="get" class="mt-3">
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label for="minPrice" class="sr-only">Minimum Price</label>
-                            <input type="number" class="form-control" id="minPrice" name="minPrice" placeholder="Min Price" required>
+                            <input type="number" class="form-control w-25" id="minPrice" name="minPrice" placeholder="Min Price" required>
                         </div>
                         <div class="col-auto">
                             <label for="maxPrice" class="sr-only">Maximum Price</label>
-                            <input type="number" class="form-control" id="maxPrice" name="maxPrice" placeholder="Max Price" required>
+                            <input type="number" class="form-control w-25" id="maxPrice" name="maxPrice" placeholder="Max Price" required>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-dark m-2">Filter by Price Range</button>
+                            <button type="submit" class="btn btn-outline-dark mt-2 mb-4 w-25">Submit</button>
                         </div>
                     </div>
                 </form>
             </div>
+
+
+
         </div>
     </div>
-</div>
+    <!-- Pagination -->
+@if (Model.HasPreviousPage || Model.HasNextPage)
+{
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+            @if (Model.HasPreviousPage)
+            {
+                if (@ViewData["FilterQueryString"] == "" )
+                {
+                        <li class="page-item">
+                            <a class="page-link text-dark" href="?page=@(Model.PageIndex - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                }
+                else
+                {
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
-            <div class="card mb-3" style="max-width: 600px;">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-header text-white bg-dark">
+                    <li class="page-item">
+                            <a class="page-link text-dark" href="@ViewData["FilterQueryString"]&page=@(Model.PageIndex - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                    </li>
+                }
+
+            }
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                if (@ViewData["FilterQueryString"] == "")
+                {
+
+                        <li class="page-item @(i == Model.PageIndex ? "bg-light" : "")">
+                            <a class="page-link  @(i == Model.PageIndex ? "font-weight-bold" : "text-dark")" href="?page=@i">@i</a>
+                        </li>
+                }
+                else
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "bg-light" : "")">
+                        <a class="page-link text-dark" href="@ViewData["FilterQueryString"]&page=@i">@i</a>
+                    </li>
+                }
+
+            }
+            @if (Model.HasNextPage)
+            {
+                if (@ViewData["FilterQueryString"] == "")
+                {
+                    
+                        <li class="page-item">
+                            <a class="page-link text-dark" href="?page=@(Model.PageIndex + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                }
+                else
+                {
+                <li class="page-item">
+                        <a class="page-link text-dark" href="@ViewData["FilterQueryString"]&page=@(Model.PageIndex + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            }
+            </ul>
+        </nav>
+}
+
+
+    <div class="container">
+        <div class="row justify-content-center mx-auto">
+        @foreach (var item in Model)
+        {
+                <div class="col-lg-3 col-md-5 col-sm-7 mb-3">
+                    <div class="card border-0 shadow-lg">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                                <a class="float-right btn btn-outline-light" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square text-dark"></i></a>
+                        }
+                        <img src="@item.ImageURL" class="card-img-top" alt="@item.ProductName" style="object-fit: cover; max-height: 240px; max-width 300px;min-width: 300px; min-height: 240px; ">
+                        <div class="card-body text-center" style="height: 10rem;">
+                            <h5 class="card-title">@item.ProductName</h5>
                             <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.ProductName
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a class="float-right btn btn-outline-light" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                    }
-                                </h5>
+                                <small class="text-muted">Country: @item.Country.CountryName</small>
                             </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mt-4">
-                        <img src="@item.ImageURL" width="100%" alt="@item.ProductName">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <p class="card-text">@item.ProductDescription</p>
-                            <p class="card-text"><b>Country: </b>@item.Country.CountryName</p>
-                            <p class="card-text"><b>Category: </b>@item.productCategory</p>
+                      
+                            <p class="card-text">
+                                <small class="text-muted">Price: @item.ProductPrice $</small>
+                            </p>
+                            <p class="card-text">
                             @if (item.Stock > 0)
                             {
-                                <p class="card-text text-success"><b>In stock</b></p>
+                                <p class="alert-success"><b>In stock</b></p>
                             }
                             else
                             {
-                                <p class="card-text text-danger"><b>Not in stock</b></p>
+                                <p class="alert-danger"><b>Not in stock</b></p>
                             }
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card-footer">
-                            <p class="card-text">
-                                <a class="btn btn-outline-dark float-right" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i>Details
-                                </a>
-                                @if (item.Stock > 0)
-                                {
-                                    <a class="btn btn-outline-dark"
-                                       asp-controller="Orders"
-                                       asp-action="BuyItemNow"
-                                       asp-route-id="@item.Id">
-                                        Buy now (@item.ProductPrice.ToString("c")/100g)
-                                    </a>
-                                    <a class="btn btn-outline-dark"
-                                       asp-controller="Products"
-                                       asp-action="AddItemToShoppingCart"
-                                       asp-route-id="@item.Id">
-                                        <i class="bi bi-cart-plus"></i> Add to Cart (@item.ProductPrice.ToString("c")/100g)
-                                    </a>
-                                }
-                                else
-                                {
-                                    if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a class="btn btn-outline-dark"
-                                           asp-controller="Products"
-                                           asp-action="Notify"
-                                           asp-route-id="@item.Id">
-                                            <i class="bi bi-cart-plus"></i> Notify Me
-                                        </a>
-                                        
-                                    }
-                                }
                             </p>
+                        </div>
+                        <div class="card-footer bg-transparent justify-content-center mx-auto">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="@Url.Action("Details", new { id = @item.Id })" class="btn btn-outline-dark btn-sm">
+                                    Details
+                                </a>
+                            @if (item.Stock > 0)
+                            {
+                                    <a href="@Url.Action("BuyItemNow", "Orders", new { id = @item.Id })" class="btn btn-outline-dark btn-sm mx-2">
+                                        Buy Now
+                                    </a>
+                                    <a href="@Url.Action("AddItemToShoppingCart", "Products", new { id = @item.Id })" class="btn btn-outline-dark btn-sm">
+                                        Add to Cart
+                                    </a>
+                            }
+                            else
+                            {
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                        <a href="@Url.Action("Notify", "Products", new { id = @item.Id })" class="btn btn-outline-dark btn-sm mx-2">
+                                            Notify Me
+                                        </a>
+                                }
+                            }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+        }
         </div>
-    }
-</div>
+    </div>
 
 
 
 @section Scripts {
-    <script>
-        document.getElementById('filterToggleBtn').addEventListener('click', function () {
-            var filterBlock = document.getElementById('filterBlock');
-            if (filterBlock.style.display === 'none') {
-                filterBlock.style.display = 'block';
-            } else {
-                filterBlock.style.display = 'none';
-            }
-        });
-    </script>
+        <script>
+            document.getElementById('filterToggleBtn').addEventListener('click', function () {
+                var filterBlock = document.getElementById('filterBlock');
+                if (filterBlock.style.display === 'none') {
+                    filterBlock.style.display = 'block';
+                } else {
+                    filterBlock.style.display = 'none';
+                }
+            });
+        </script>
 }
-
-
-
 
 @await Html.PartialAsync("_CreateItem", "Products")

@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Web.Helpers;
 using AsifNutsNSeeds.Data;
 using AsifNutsNSeeds.Data.Cart;
 using AsifNutsNSeeds.Data.Services;
@@ -136,8 +137,20 @@ namespace AsifNutsNSeeds.Controllers
 
                 await smtp.SendMailAsync(message);
             }
+            var order = new Order
+            {
+                OrderId = orderNumber,
+                Email = userEmailAddress,
+                UserId = userId, // You may need to retrieve this from the database based on the user's email
+                Address = userAddress,
+                City = userCity,
+                PostalCode = userPostalCode,
+                // Add other properties as needed
+            };
 
-            return View("OrderCompleted");
+            // Return the order object to the view
+            return View("OrderCompleted", order);
+
         }
 
         public async Task<IActionResult> CompleteOrderByGuest(string Address, string City, string PostalCode, string Email)
@@ -145,7 +158,7 @@ namespace AsifNutsNSeeds.Controllers
         {
 
             var items = _shoppingCart.GetShoppingCartItems();
-            string userId = "0a8a3652-c22a-4fd3-af73-12f410aedca3";
+            string userId = "1234";
             string userEmailAddress = Email;
 
             // Retrieve user information from the database based on the user ID
@@ -196,7 +209,7 @@ namespace AsifNutsNSeeds.Controllers
             message.From = new MailAddress("etomer9@gmail.com"); // Set the sender's email address
             message.To.Add(userEmailAddress);
             message.Subject = "Order Completed";
-            message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nTThank you.";
+            message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nThank you.";
 
             using (var smtp = new SmtpClient(host, port))
             {
@@ -206,7 +219,21 @@ namespace AsifNutsNSeeds.Controllers
                 await smtp.SendMailAsync(message);
             }
 
-            return View("OrderCompleted");
+            var order = new Order
+            {
+                OrderId = orderNumber,
+                Email = Email,
+                UserId = "1234", // You may need to retrieve this from the database based on the user's email
+                Address = Address,
+                City = City,
+                PostalCode = userPostalCode,
+
+                // Add other properties as needed
+            };
+
+            // Return the order object to the view
+            return View("OrderCompleted", order);
+
         }
 
 

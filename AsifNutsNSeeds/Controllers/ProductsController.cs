@@ -13,6 +13,7 @@ using Microsoft.Data.SqlClient;
 using AsifNutsNSeeds.Data.Enums;
 using System.Linq.Expressions;
 using AsifNutsNSeeds.Data.Cart;
+using Microsoft.AspNetCore.Http;
 
 namespace AsifNutsNSeeds.Controllers
 {
@@ -33,11 +34,13 @@ namespace AsifNutsNSeeds.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
             string userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "AnonymousID";
-            
+            var paginatedProducts = PaginatedList<Product>.Create(allProducts.ToList(), page, pageSize);
+
+            ViewData["FilterQueryString"] = "";
 
             // Get the list of users who have subscribed to notifications for products that are back in stock
             var productsToNotify = await _context.ProductNotifications
@@ -55,7 +58,7 @@ namespace AsifNutsNSeeds.Controllers
             {
                 foreach (var prod in allProducts)
                 {
-                    if(prod.Id == notifyProduct.ProductId && prod.Stock > 0)
+                    if (prod.Id == notifyProduct.ProductId && prod.Stock > 0)
                     {
                         var userObj = await _context.Users.FirstOrDefaultAsync(u => u.Id == notifyProduct.UserId);
 
@@ -92,10 +95,10 @@ namespace AsifNutsNSeeds.Controllers
                         }
                     }
                 }
-                
+
             }
 
-            return View(allProducts);
+            return View(paginatedProducts);
         }
         public async Task<RedirectToActionResult> Notify(int Id)
         {
@@ -104,8 +107,12 @@ namespace AsifNutsNSeeds.Controllers
 
             try
             {
+                // Check if a notification already exists for the same product and user
+                var existingNotification = await _context.ProductNotifications
+                    .FirstOrDefaultAsync(n => n.ProductId == item.Id && n.UserId == userId);
+
                 // Check if the product is out of stock and was just restocked
-                if (item.Stock <= 0)
+                if (item.Stock <= 0 && existingNotification == null)
                 {
                     var newNotification = new ProductNotification
                     {
@@ -117,7 +124,14 @@ namespace AsifNutsNSeeds.Controllers
 
                     // Save changes to the database
                     await _context.SaveChangesAsync();
+                    TempData["AlertMessage"] = "We'll email you as soon as the product will be back to stock!";
                 }
+                else
+                {
+                    TempData["AlertMessage"] = "Already subscribed, dont worry, when the product will back to stock we'll let you know:)";
+
+                }
+
             }
             catch (DbUpdateException ex)
             {
@@ -146,11 +160,29 @@ namespace AsifNutsNSeeds.Controllers
             {
                 _shoppingCart.AddItemToCart(item);
             }
-            return View("Index", allProducts);
+            TempData["ItemMessage"] = "Item added successfuly!";
+
+            return RedirectToAction("Index"); // Redirect to the Index action
 
 
         }
-        public async Task<IActionResult> Filter(string searchString)
+        private string GenerateFilterQueryString(ProductCategory? category, double? minPrice, double? maxPrice, int page)
+        {
+            var queryString = "";
+
+            if (category.HasValue)
+                queryString = $"FilterByCategory?category={(int)category.Value}";
+
+            if (minPrice.HasValue)
+                queryString += $"?minPrice={minPrice.Value}";
+
+            if (maxPrice.HasValue)
+                queryString += $"&maxPrice={maxPrice.Value}";
+
+            return queryString;
+        }
+
+        public async Task<IActionResult> Filter(string searchString, int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
 
@@ -161,21 +193,28 @@ namespace AsifNutsNSeeds.Controllers
                     n.ProductDescription.ToLower().Contains(searchString.ToLower())
                 ).ToList();
 
-                return View("Index", filteredResult);
+                var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+                return View("Index", paginatedResult);
             }
 
-            return View("Index", allProducts);
+            var paginatedAllProducts = PaginatedList<Product>.Create(allProducts.ToList(), page, pageSize);
+
+            return View("Index", paginatedAllProducts);
         }
 
-        public async Task<IActionResult> FilterByPriceLowToHigh()
+        public async Task<IActionResult> FilterByPriceLowToHigh(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
 
             var filteredResult = allProducts.OrderBy(n => n.ProductPrice).ToList();
 
-            return View("Index", filteredResult);
+            var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+            return View("Index", paginatedResult);
         }
-        public async Task<IActionResult> FilterByPriceRange(double minPrice, double maxPrice)
+
+        public async Task<IActionResult> FilterByPriceRange(double minPrice, double maxPrice, int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
 
@@ -183,26 +222,37 @@ namespace AsifNutsNSeeds.Controllers
                                              .OrderBy(n => n.ProductPrice)
                                              .ToList();
 
-            return View("Index", filteredResult);
+            var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+            var queryString = GenerateFilterQueryString(null, minPrice, maxPrice, page);
+            ViewData["FilterQueryString"] = queryString;
+
+            return View("Index", paginatedResult);
         }
 
-        public async Task<IActionResult> FilterByPriceHighToLow()
+        public async Task<IActionResult> FilterByPriceHighToLow(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
 
             var filteredResult = allProducts.OrderByDescending(n => n.ProductPrice).ToList();
 
-            return View("Index", filteredResult);
+            var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+            return View("Index", paginatedResult);
         }
-        public async Task<IActionResult> FilterByPopularity()
+
+        public async Task<IActionResult> FilterByPopularity(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
 
             var filteredResult = allProducts.OrderByDescending(n => n.Sold).ToList();
 
-            return View("Index", filteredResult);
+            var paginatedResult = PaginatedList<Product>.Create(filteredResult, page, pageSize);
+
+            return View("Index", paginatedResult);
         }
-        public async Task<IActionResult> FilterByCategory(ProductCategory category)
+
+        public async Task<IActionResult> FilterByCategory(ProductCategory category, int page = 1, int pageSize = 8)
         {
             // Remove p => p.productCategory from the includeProperties list
             var allProducts = await _service.GetAllAsync(includeProperties: new Expression<Func<Product, object>>[] { p => p.Country });
@@ -210,9 +260,13 @@ namespace AsifNutsNSeeds.Controllers
             // Filter products by category
             var filteredProducts = allProducts.Where(p => p.productCategory == category);
 
-            return View("Index", filteredProducts);
-        }
 
+            var paginatedResult = PaginatedList<Product>.Create(filteredProducts.ToList(), page, pageSize);
+            var queryString = GenerateFilterQueryString(category, null, null, page);
+            ViewData["FilterQueryString"] = queryString;
+
+            return View("Index", paginatedResult);
+        }
 
         //GET: Movies/Details/1
         [AllowAnonymous]
@@ -241,9 +295,9 @@ namespace AsifNutsNSeeds.Controllers
             {
                 var productDropdownsData = await _service.GetNewProductDropdownsValues();
 
-                ViewBag.Cinemas = new SelectList(productDropdownsData.Countries, "Id", "CountryName");
+                ViewBag.Countries = new SelectList(productDropdownsData.Countries, "Id", "CountryName");
                 ViewBag.Producers = new SelectList(productDropdownsData.Producers, "Id", "ProducerName");
-                ViewBag.Actors = new SelectList(productDropdownsData.Branches, "Id", "BranchName");
+                ViewBag.Branches = new SelectList(productDropdownsData.Branches, "Id", "BranchName");
 
                 return View(product);
             }

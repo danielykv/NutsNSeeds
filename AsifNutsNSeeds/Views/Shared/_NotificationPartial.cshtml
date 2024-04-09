@@ -1,0 +1,22 @@
+﻿<!-- _NotificationPartial.cshtml -->
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+    var itemMessage = TempData["ItemMessage"] as string;
+
+}
+
+@if (!string.IsNullOrEmpty(alertMessage))
+{
+    <div class="alert alert-info text-center" role="alert">
+        @alertMessage
+        
+    </div>
+}
+@if (!string.IsNullOrEmpty(itemMessage))
+{
+    <div class="alert alert-success text-center" role="alert">
+        @itemMessage
+
+    </div>
+}
+

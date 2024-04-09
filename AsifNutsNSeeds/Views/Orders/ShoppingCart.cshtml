@@ -50,7 +50,7 @@
                         <div class="col-md-4">
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <div id="paypal-btn"></div>
+                                <div id="paypal-btn-registered"></div>
                             }
                             else
                             {
@@ -133,6 +133,52 @@
     </script>
 
     <script>
+        let _1total = @Html.Raw(Model.ShoppingCartTotal);
+
+        // Render PayPal button for guest checkout
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'AUTvnAXyTBrAPKYWKMQQ18Lz6fne2EnROx0vkxeSRJzo3EHlFNk67UA-aMQfZXTOI65RkaKPZWL3UCan'
+            },
+            // Customize button
+            locale: 'en_US',
+            style: {
+                size: 'medium',
+                color: 'gold',
+                shape: 'pill'
+            },
+            commit: true,
+            // Set up a payment
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _1total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+            // Execute the payment
+            onAuthorize: function (data, actions) {
+                return actions.payment.execute().then(function () {
+                    // Redirect to CompleteOrderByGuest action with form data
+
+
+
+                    var url = '/Orders/CompleteOrder'
+
+                    console.log(url);
+
+                    window.location.href = url;
+                });
+            }
+        }, '#paypal-btn-registered');
+    </script>
+
+    <script>
         let _total = @Html.Raw(Model.ShoppingCartTotal);
 
         // Render PayPal button for guest checkout
@@ -188,4 +234,6 @@
             }
         }, '#paypal-btn');
     </script>
+
+    
 }

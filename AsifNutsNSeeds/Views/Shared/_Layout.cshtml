@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model PaginatedList<Product> 
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,7 +30,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="btn btn-outline-dark mt-2" asp-area="" asp-controller="Products" asp-action="Index"><i class="bi bi-nut"></i> Products</a>
+                
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-nut"></i> Category</a>
+                            <div class="dropdown-menu mx-2" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="NutsAndSeeds">NutsAndSeeds</a>
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="Spices">Spices</a>
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="Legumes">Legumes</a>
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="DriedFruits">DriedFruits</a>
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="Pickles">Pickles</a>
+                                <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="Sweets">Sweets</a>
+
+                          
+
+
+                            
+                            </div>
                         </li>
 
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -63,8 +80,12 @@
         </nav>
     </header>
     <div class="container-fluid">
+
+        <!-- Include the notification partial -->
+        @Html.Partial("_NotificationPartial")
         <main role="main" class="pb-3">
             @RenderBody()
+
         </main>
 
     </div>
