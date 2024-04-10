@@ -1,4 +1,7 @@
-![Logo](https://r2.easyimg.io/fiv8nuih1/asifnuts-copilot-25.png)
+
+<div align="center">
+  <img src="https://r2.easyimg.io/fiv8nuih1/asifnuts-copilot-25.png" alt="Logo">
+</div>
 
 # Asif's Nuts & Seeds - E-Commerce Store
 
