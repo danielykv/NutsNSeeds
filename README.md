@@ -6,6 +6,7 @@
 # Asif's Nuts & Seeds - E-Commerce Store
 
 Hello, we are Daniel and Tomer, Welcome to Asif's Nuts & Seeds! This is a fully-functional e-commerce platform built using ASP.NET and MVC (Model-View-Controller) architecture. Our platform offers a seamless shopping experience for both customers and administrators, with features designed to enhance usability, manageability, and scalability.
+Project link - https://asifnutsandseeds.azurewebsites.net/Products.
 
 ## Features
 
