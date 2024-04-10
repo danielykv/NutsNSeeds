@@ -57,6 +57,9 @@ dotnet run
 
 You can install these packages using the NuGet Package Manager or by adding them manually to your project's .csproj file.
 
+## SQL database connection
+Enter appsettings.Development inside appsettings.json, enter your sql local server connection string  at "DefaultConnectionString".
+
 ## Screenshots
 
 ![App Screenshot](https://i.ibb.co/yW4KQwF/image.png)
