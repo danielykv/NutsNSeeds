@@ -31,7 +31,7 @@ else
     
 
     <div class="d-flex justify-content-center mt-2 mb-2 border-bottom border-top">
-        <a class="nav-link dropdown-toggle text-dark me-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle text-dark pe-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-gear"></i> Sort
         </a>
 
@@ -41,7 +41,7 @@ else
             <a class="dropdown-item btn btn-dark m-2" asp-action="FilterByPopularity">Sort by Popularity</a>
         </div>
 
-        <a class="nav-link dropdown-toggle text-dark me-2" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-nut"></i> Category</a>
+        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="bi bi-nut"></i> Category</a>
         <div class="dropdown-menu mx-2" aria-labelledby="navbarDropdown">
 
             <a class="dropdown-item btn btn-dark" asp-action="FilterByCategory" asp-controller="Products" asp-route-category="NutsAndSeeds">NutsAndSeeds</a>
@@ -55,11 +55,11 @@ else
         </div>
 
         <form asp-action="FilterByPriceRange" asp-controller="Products" method="get" class="d-flex align-items-center">
-            <label for="minPrice" class="w-75">Min Price</label>
-            <input type="number" class="form-control form-control-sm me-2" id="minPrice" name="minPrice" placeholder="Min Price" required>
+            <label for="minPrice" class="w-50 me-2">Min Price</label>
+            <input type="number" class="form-control form-control-sm me-2" id="minPrice" name="minPrice" placeholder="Min" required>
 
-            <label for="maxPrice" class="w-75">Max Price</label>
-            <input type="number" class="form-control form-control-sm me-2" id="maxPrice" name="maxPrice" placeholder="Max Price" required>
+            <label for="maxPrice" class="w-50 me-2">Max Price</label>
+            <input type="number" class="form-control form-control-sm" id="maxPrice" name="maxPrice" placeholder="Max" required>
 
             <button type="submit" class=" btn btn-sm"><i class="bi bi-funnel-fill"></i></button>
         </form>
