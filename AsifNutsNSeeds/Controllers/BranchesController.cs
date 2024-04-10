@@ -16,6 +16,8 @@ namespace AsifNutsNSeeds.Controllers
             _service = service;
         }
 
+        //Handle deafult page for branches with list of branches
+
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();

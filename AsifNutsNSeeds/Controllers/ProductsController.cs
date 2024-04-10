@@ -34,6 +34,8 @@ namespace AsifNutsNSeeds.Controllers
 
         }
 
+        //Handle deafult page for produts with list of branches
+
         public async Task<IActionResult> Index(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -41,6 +43,8 @@ namespace AsifNutsNSeeds.Controllers
             var paginatedProducts = PaginatedList<Product>.Create(allProducts.ToList(), page, pageSize);
 
             ViewData["FilterQueryString"] = "";
+
+            // Checking if notification email for any user is needed.
 
             // Get the list of users who have subscribed to notifications for products that are back in stock
             var productsToNotify = await _context.ProductNotifications
@@ -53,7 +57,7 @@ namespace AsifNutsNSeeds.Controllers
               .Distinct()
               .ToListAsync();
 
-            // Send email notifications to users
+
             foreach (var notifyProduct in productsToNotify)
             {
                 foreach (var prod in allProducts)
@@ -100,6 +104,9 @@ namespace AsifNutsNSeeds.Controllers
 
             return View(paginatedProducts);
         }
+
+        //Handle the functionality of notify button on product that is not in stock
+
         public async Task<RedirectToActionResult> Notify(int Id)
         {
             var item = await _service.GetProductByIdAsync(Id);
@@ -151,6 +158,9 @@ namespace AsifNutsNSeeds.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        //Handle add to cart action
+
         public async Task<IActionResult> AddItemToShoppingCart(int Id)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -164,8 +174,9 @@ namespace AsifNutsNSeeds.Controllers
 
             return RedirectToAction("Index"); // Redirect to the Index action
 
-
         }
+
+        //Handle correct url strings for all filters
         private string GenerateFilterQueryString(ProductCategory? category, string? searchString, double? minPrice, double? maxPrice,string? highToLow,string? lowToHigh, int page,string? popularity)
         {
             var queryString = "";
@@ -194,6 +205,8 @@ namespace AsifNutsNSeeds.Controllers
             return queryString;
         }
 
+        // Handle search filter
+
         public async Task<IActionResult> Filter(string searchString, int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -217,6 +230,8 @@ namespace AsifNutsNSeeds.Controllers
             return View("Index", paginatedAllProducts);
         }
 
+        // Handle low to high filter
+
         public async Task<IActionResult> FilterByPriceLowToHigh(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -231,6 +246,7 @@ namespace AsifNutsNSeeds.Controllers
             return View("Index", paginatedResult);
         }
 
+        //Handle price range filter
         public async Task<IActionResult> FilterByPriceRange(double minPrice, double maxPrice, int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -247,6 +263,7 @@ namespace AsifNutsNSeeds.Controllers
             return View("Index", paginatedResult);
         }
 
+        //Handle high to low filter
         public async Task<IActionResult> FilterByPriceHighToLow(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -261,6 +278,7 @@ namespace AsifNutsNSeeds.Controllers
             return View("Index", paginatedResult);
         }
 
+        //Handle popularuty filter
         public async Task<IActionResult> FilterByPopularity(int page = 1, int pageSize = 8)
         {
             var allProducts = await _service.GetAllAsync(n => n.Country);
@@ -277,6 +295,7 @@ namespace AsifNutsNSeeds.Controllers
             return View("Index", paginatedResult);
         }
 
+        //Handdle category filter
         public async Task<IActionResult> FilterByCategory(ProductCategory category, int page = 1, int pageSize = 8)
         {
             // Remove p => p.productCategory from the includeProperties list

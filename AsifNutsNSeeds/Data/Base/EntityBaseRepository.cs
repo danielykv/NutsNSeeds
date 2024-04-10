@@ -14,6 +14,8 @@ namespace AsifNutsNSeeds.Data.Base
 		{
 			_context = context;
 		}
+		//Handle funcionality for methods used with db
+
 		public async Task AddAsync(T entity)
 		{
 			 await _context.Set<T>().AddAsync(entity);

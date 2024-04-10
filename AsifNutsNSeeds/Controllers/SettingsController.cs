@@ -13,6 +13,9 @@ namespace AsifNutsNSeeds.Controllers
         {
             _userManager = userManager;
         }
+
+        //Handle deafult page for settings with user's account information
+
         public async Task<IActionResult> Index()
         {
             // Get the current user
@@ -26,6 +29,7 @@ namespace AsifNutsNSeeds.Controllers
             return View(user); // Pass the user object to the view
         }
 
+        //Handle update on address,city,postalcode information.
         [HttpPost]
         public async Task<IActionResult> UpdateSettings(ApplicationUser model)
         {
@@ -63,7 +67,6 @@ namespace AsifNutsNSeeds.Controllers
                 }
             }
             
-            // If ModelState is invalid, return to the settings page with validation errors
             return View("Settings", model);
         }
     }

@@ -30,6 +30,9 @@ namespace AsifNutsNSeeds.Controllers
             _context = context;
             _configuration = configuration;
         }
+
+        //Handle default page for orders for spesific user
+
         public async  Task<IActionResult> Index()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -38,6 +41,9 @@ namespace AsifNutsNSeeds.Controllers
 
             return View(orders);
         }
+
+        //Handle Shoppingcart page for spesific user
+
         public IActionResult ShoppingCart()
         {
             var items = _shoppingCart.GetShoppingCartItems();
@@ -49,6 +55,9 @@ namespace AsifNutsNSeeds.Controllers
             };
             return View(response);
         }
+
+        //Handle Buy now action for the products
+
         public async Task<RedirectToActionResult> BuyItemNow(int Id)
         {
             var item = await _productsService.GetProductByIdAsync(Id);
@@ -62,8 +71,7 @@ namespace AsifNutsNSeeds.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
-        
-
+        //Handle remove item from cart action for the products
 
         public async Task<RedirectToActionResult> RemoveItemFromShoppingCart(int Id)
         {
@@ -74,6 +82,9 @@ namespace AsifNutsNSeeds.Controllers
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
+
+        //Handle complete order action (after payment)
+
         public async Task<IActionResult> CompleteOrder()
         {
             var items = _shoppingCart.GetShoppingCartItems();
@@ -112,6 +123,8 @@ namespace AsifNutsNSeeds.Controllers
             // Save changes to the database
             await _context.SaveChangesAsync();
 
+            //Sending email for the client with all the details
+
             int orderNumber = await _context.Orders
                                 .OrderByDescending(o => o.OrderId)
                                 .Select(o => o.OrderId)
@@ -125,8 +138,8 @@ namespace AsifNutsNSeeds.Controllers
             var password = smtpSettings["Password"];
 
             var message = new MailMessage();
-            message.From = new MailAddress("etomer9@gmail.com"); // Set the sender's email address
-            message.To.Add(userEmailAddress);
+            message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
+            message.To.Add(userEmailAddress);// Reciever's email address
             message.Subject = "Order Completed";
             message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nTThank you.";
 
@@ -141,17 +154,17 @@ namespace AsifNutsNSeeds.Controllers
             {
                 OrderId = orderNumber,
                 Email = userEmailAddress,
-                UserId = userId, // You may need to retrieve this from the database based on the user's email
+                UserId = userId, 
                 Address = userAddress,
                 City = userCity,
                 PostalCode = userPostalCode,
-                // Add other properties as needed
             };
 
-            // Return the order object to the view
             return View("OrderCompleted", order);
 
         }
+
+        //Handle complete order action (after payment) by a guest
 
         public async Task<IActionResult> CompleteOrderByGuest(string Address, string City, string PostalCode, string Email)
 
@@ -161,7 +174,6 @@ namespace AsifNutsNSeeds.Controllers
             string userId = "1234";
             string userEmailAddress = Email;
 
-            // Retrieve user information from the database based on the user ID
 
             // Check if user exists and retrieve address, city, and postal code
             string userAddress = Address;
@@ -192,6 +204,9 @@ namespace AsifNutsNSeeds.Controllers
             // Save changes to the database
             await _context.SaveChangesAsync();
 
+            //Sending email for the client with all the details
+
+
             int orderNumber = await _context.Orders
                                 .OrderByDescending(o => o.OrderId)
                                 .Select(o => o.OrderId)
@@ -206,8 +221,8 @@ namespace AsifNutsNSeeds.Controllers
             var password = smtpSettings["Password"];
 
             var message = new MailMessage();
-            message.From = new MailAddress("etomer9@gmail.com"); // Set the sender's email address
-            message.To.Add(userEmailAddress);
+            message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
+            message.To.Add(userEmailAddress);// Reciever's email address
             message.Subject = "Order Completed";
             message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nThank you.";
 
@@ -223,12 +238,10 @@ namespace AsifNutsNSeeds.Controllers
             {
                 OrderId = orderNumber,
                 Email = Email,
-                UserId = "1234", // You may need to retrieve this from the database based on the user's email
+                UserId = "1234",
                 Address = Address,
                 City = City,
                 PostalCode = userPostalCode,
-
-                // Add other properties as needed
             };
 
             // Return the order object to the view

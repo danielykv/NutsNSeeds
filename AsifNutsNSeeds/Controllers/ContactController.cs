@@ -14,10 +14,15 @@ namespace AsifNutsNSeeds.Controllers
             _configuration = configuration;
 
         }
+
+        //Handle default page for contact
+
         public IActionResult Index()
         {
             return View();
         }
+
+        //Handle user's request for sending email
 
         public async Task<IActionResult> SendEmail(string msg,string name,string email,string phone)
         {

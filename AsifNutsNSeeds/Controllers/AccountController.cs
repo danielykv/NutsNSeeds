@@ -14,6 +14,7 @@ namespace AsifNutsNSeeds.Controllers
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly AppDbContext _context;
+
 		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
 		{
 			_userManager = userManager;
@@ -21,13 +22,17 @@ namespace AsifNutsNSeeds.Controllers
 			_context = context;
 		}
 
+		// Handle users list request
 		public async Task<IActionResult> Users()
 		{
 			var users = await _context.Users.ToListAsync();
 			return View(users);
 		}
 
-		public IActionResult Login() => View(new LoginVM());
+        // Handle login
+
+        public IActionResult Login() => View(new LoginVM());
+
 		[HttpPost]
         public async Task<IActionResult> Login(LoginVM loginVM)
 		{
@@ -53,6 +58,9 @@ namespace AsifNutsNSeeds.Controllers
 			return View(loginVM);
 
 		}
+
+		//Handle registeraion
+
         public IActionResult Register() => View(new RegisterVM());
 
         [HttpPost]
@@ -105,6 +113,8 @@ namespace AsifNutsNSeeds.Controllers
 				return View(registerVM);
 			}
 		}
+
+		//Handle logout
 
 		[HttpPost]
         public async Task<IActionResult> Logout()

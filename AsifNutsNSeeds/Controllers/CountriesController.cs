@@ -16,6 +16,8 @@ namespace AsifNutsNSeeds.Controllers
 			_service = service;
 		}
 
+		//Handle default page for countries with list of the countries
+
 		public async Task<IActionResult> Index()
         {
             var allCountries = await _service.GetAllAsync();
