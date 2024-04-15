@@ -146,7 +146,9 @@ namespace AsifNutsNSeeds.Data
 								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/fdd39d92-ca17-4341-8eca-e8286d69e472.jpg?v=1681655158&width=713",
 								CountryID = 4,
 								ProducerID = 1,
-								productCategory = ProductCategory.NutsAndSeeds
+                                Sold = 2,
+                                Stock = 3,
+                                productCategory = ProductCategory.NutsAndSeeds
 
 
 							},
@@ -159,6 +161,8 @@ namespace AsifNutsNSeeds.Data
 								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/baf198ef-1489-4d4e-8338-8968c86b92f4.jpg?v=1681655423&width=493",
 								CountryID = 5,
 								ProducerID = 1,
+								Sold = 2,
+								Stock = 3,
 								productCategory = ProductCategory.NutsAndSeeds
                             },
 
@@ -170,7 +174,9 @@ namespace AsifNutsNSeeds.Data
 								ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.09.08.png?v=1681726285&width=713",
 								CountryID = 4,
 								ProducerID = 2,
-								productCategory = ProductCategory.NutsAndSeeds
+                                Sold = 2,
+                                Stock = 3,
+                                productCategory = ProductCategory.NutsAndSeeds
                             },
 
                             new Product()
@@ -181,6 +187,8 @@ namespace AsifNutsNSeeds.Data
                                 ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.13.50.png?v=1681726462&width=713",
                                 CountryID = 4,
                                 ProducerID = 2,
+                                Sold = 2,
+                                Stock = 3,
                                 productCategory = ProductCategory.NutsAndSeeds
                             },
 
@@ -193,6 +201,8 @@ namespace AsifNutsNSeeds.Data
                                 ImageURL = "https://hamamanuts.co.il/cdn/shop/products/2023-04-17_-13.15.22.png?v=1681726547&width=713",
                                 CountryID = 4,
                                 ProducerID = 2,
+                                Sold = 2,
+                                Stock = 3,
                                 productCategory = ProductCategory.NutsAndSeeds
                             },
 
@@ -204,6 +214,8 @@ namespace AsifNutsNSeeds.Data
                                 ImageURL = "https://hamamanuts.co.il/cdn/shop/products/ae7ebedf-54da-4b9e-847c-10f8571d8581.webp?v=1681659679&width=713",
                                 CountryID = 4,
                                 ProducerID = 2,
+                                Sold = 2,
+                                Stock = 3,
                                 productCategory = ProductCategory.NutsAndSeeds
                             },
                         });
@@ -267,7 +279,11 @@ namespace AsifNutsNSeeds.Data
 						Fullname = "Admin user",
 						UserName = "admin-user",
 						Email = adminUserEmail,
-						EmailConfirmed = true
+						Address = "Leah 47/2",
+						City = "Beer Sheva",
+						PostalCode = "8452738",
+
+                        EmailConfirmed = true
 
 					};
 					await userManager.CreateAsync(newAdminUser, "Coding@1234?");
@@ -283,7 +299,10 @@ namespace AsifNutsNSeeds.Data
 						Fullname = "Application user",
 						UserName = "app-user",
 						Email = appUserEmail,
-						EmailConfirmed = true
+                        Address = "dfgdf",
+                        City = "dfgd",
+                        PostalCode = "dfg",
+                        EmailConfirmed = true
 
 					};
 					await userManager.CreateAsync(newAppUser, "Coding@1234?");
