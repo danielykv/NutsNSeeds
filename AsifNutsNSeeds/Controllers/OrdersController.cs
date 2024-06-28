@@ -90,7 +90,7 @@ namespace AsifNutsNSeeds.Controllers
             var items = _shoppingCart.GetShoppingCartItems();
             string userId = User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "AnonymousID";
             string userEmailAddress = User?.FindFirstValue(ClaimTypes.Email) ?? "AnonymousEmail";
-
+            var orderFlag = 0;
             // Retrieve user information from the database based on the user ID
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -112,11 +112,12 @@ namespace AsifNutsNSeeds.Controllers
             foreach (var item in items)
             {
                 var product = await _context.Products.FindAsync(item.Product.Id);
-                if (product != null)
+                if (product != null && product.Stock > 0)
                 {
                     // Ensure stock doesn't go negative
                     product.Stock = Math.Max(0, product.Stock - 1);
                     product.Sold = product.Sold + 1;
+                    orderFlag = 1;
                 }
             }
 
@@ -124,43 +125,47 @@ namespace AsifNutsNSeeds.Controllers
             await _context.SaveChangesAsync();
 
             //Sending email for the client with all the details
-
-            int orderNumber = await _context.Orders
-                                .OrderByDescending(o => o.OrderId)
-                                .Select(o => o.OrderId)
-                                .FirstOrDefaultAsync();
-
-            var smtpSettings = _configuration.GetSection("SmtpSettings");
-            var host = smtpSettings["Host"];
-            var port = int.Parse(smtpSettings["Port"]);
-            var enableSSL = bool.Parse(smtpSettings["EnableSSL"]);
-            var username = smtpSettings["Username"];
-            var password = smtpSettings["Password"];
-
-            var message = new MailMessage();
-            message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
-            message.To.Add(userEmailAddress);// Reciever's email address
-            message.Subject = "Order Completed";
-            message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nTThank you.";
-
-            using (var smtp = new SmtpClient(host, port))
+            if(orderFlag == 1)
             {
-                smtp.EnableSsl = enableSSL;
-                smtp.Credentials = new NetworkCredential(username, password);
+                int orderNumber = await _context.Orders
+                                    .OrderByDescending(o => o.OrderId)
+                                    .Select(o => o.OrderId)
+                                    .FirstOrDefaultAsync();
 
-                await smtp.SendMailAsync(message);
+                var smtpSettings = _configuration.GetSection("SmtpSettings");
+                var host = smtpSettings["Host"];
+                var port = int.Parse(smtpSettings["Port"]);
+                var enableSSL = bool.Parse(smtpSettings["EnableSSL"]);
+                var username = smtpSettings["Username"];
+                var password = smtpSettings["Password"];
+
+                var message = new MailMessage();
+                message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
+                message.To.Add(userEmailAddress);// Reciever's email address
+                message.Subject = "Order Completed";
+                message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nTThank you.";
+
+                using (var smtp = new SmtpClient(host, port))
+                {
+                    smtp.EnableSsl = enableSSL;
+                    smtp.Credentials = new NetworkCredential(username, password);
+
+                    await smtp.SendMailAsync(message);
+                }
+                var order = new Order
+                {
+                    OrderId = orderNumber,
+                    Email = userEmailAddress,
+                    UserId = userId, 
+                    Address = userAddress,
+                    City = userCity,
+                    PostalCode = userPostalCode,
+                };
+
+              return View("OrderCompleted", order);
+
             }
-            var order = new Order
-            {
-                OrderId = orderNumber,
-                Email = userEmailAddress,
-                UserId = userId, 
-                Address = userAddress,
-                City = userCity,
-                PostalCode = userPostalCode,
-            };
-
-            return View("OrderCompleted", order);
+            return View("Index");
 
         }
 
@@ -173,6 +178,7 @@ namespace AsifNutsNSeeds.Controllers
             var items = _shoppingCart.GetShoppingCartItems();
             string userId = "1234";
             string userEmailAddress = Email;
+            var orderFlag = 0;
 
 
             // Check if user exists and retrieve address, city, and postal code
@@ -182,7 +188,7 @@ namespace AsifNutsNSeeds.Controllers
 
             // Set the order date to the current date
             DateTime orderDate = DateTime.Now;
-
+            
             // Store the order
             await _ordersService.StoreOrderAsync(items, userId, userEmailAddress, userAddress, userCity, userPostalCode, orderDate);
 
@@ -193,11 +199,13 @@ namespace AsifNutsNSeeds.Controllers
             foreach (var item in items)
             {
                 var product = await _context.Products.FindAsync(item.Product.Id);
-                if (product != null)
+                if (product != null && product.Stock > 0)
                 {
                     // Ensure stock doesn't go negative
                     product.Stock = Math.Max(0, product.Stock - 1);
                     product.Sold = product.Sold + 1;
+                    orderFlag = 1;
+
                 }
             }
 
@@ -206,46 +214,51 @@ namespace AsifNutsNSeeds.Controllers
 
             //Sending email for the client with all the details
 
-
-            int orderNumber = await _context.Orders
-                                .OrderByDescending(o => o.OrderId)
-                                .Select(o => o.OrderId)
-                                .FirstOrDefaultAsync();
-
-
-            var smtpSettings = _configuration.GetSection("SmtpSettings");
-            var host = smtpSettings["Host"];
-            var port = int.Parse(smtpSettings["Port"]);
-            var enableSSL = bool.Parse(smtpSettings["EnableSSL"]);
-            var username = smtpSettings["Username"];
-            var password = smtpSettings["Password"];
-
-            var message = new MailMessage();
-            message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
-            message.To.Add(userEmailAddress);// Reciever's email address
-            message.Subject = "Order Completed";
-            message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nThank you.";
-
-            using (var smtp = new SmtpClient(host, port))
+            if(orderFlag == 1)
             {
-                smtp.EnableSsl = enableSSL;
-                smtp.Credentials = new NetworkCredential(username, password);
 
-                await smtp.SendMailAsync(message);
+                int orderNumber = await _context.Orders
+                                    .OrderByDescending(o => o.OrderId)
+                                    .Select(o => o.OrderId)
+                                    .FirstOrDefaultAsync();
+
+
+                var smtpSettings = _configuration.GetSection("SmtpSettings");
+                var host = smtpSettings["Host"];
+                var port = int.Parse(smtpSettings["Port"]);
+                var enableSSL = bool.Parse(smtpSettings["EnableSSL"]);
+                var username = smtpSettings["Username"];
+                var password = smtpSettings["Password"];
+
+                var message = new MailMessage();
+                message.From = new MailAddress("etomer9@gmail.com"); // Sender's email address
+                message.To.Add(userEmailAddress);// Reciever's email address
+                message.Subject = "Order Completed";
+                message.Body = $"Dear {userEmailAddress},\n\nThank you for purchasing!\n\nOrder number: {orderNumber}\n\nThank you.";
+
+                using (var smtp = new SmtpClient(host, port))
+                {
+                    smtp.EnableSsl = enableSSL;
+                    smtp.Credentials = new NetworkCredential(username, password);
+
+                    await smtp.SendMailAsync(message);
+                }
+
+                var order = new Order
+                {
+                    OrderId = orderNumber,
+                    Email = Email,
+                    UserId = "1234",
+                    Address = Address,
+                    City = City,
+                    PostalCode = userPostalCode,
+                };
+
+                // Return the order object to the view
+                return View("OrderCompleted", order);
+
             }
-
-            var order = new Order
-            {
-                OrderId = orderNumber,
-                Email = Email,
-                UserId = "1234",
-                Address = Address,
-                City = City,
-                PostalCode = userPostalCode,
-            };
-
-            // Return the order object to the view
-            return View("OrderCompleted", order);
+            return View("Index");
 
         }
 
